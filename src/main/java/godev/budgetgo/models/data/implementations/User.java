@@ -2,6 +2,8 @@ package godev.budgetgo.models.data.implementations;
 
 import godev.budgetgo.models.data.abstractions.UserData;
 
+import java.util.Objects;
+
 public final class User implements UserData {
     private final int id;
     private final String email;
@@ -34,5 +36,21 @@ public final class User implements UserData {
     @Override
     public String getSurname() {
         return surname;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id &&
+                email.equals(user.email) &&
+                name.equals(user.name) &&
+                surname.equals(user.surname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, name, surname);
     }
 }
