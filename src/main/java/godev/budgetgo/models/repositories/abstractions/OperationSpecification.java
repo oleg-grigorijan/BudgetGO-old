@@ -2,12 +2,12 @@ package godev.budgetgo.models.repositories.abstractions;
 
 import godev.budgetgo.models.data.abstractions.StorageData;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface OperationSpecification extends DataSpecification {
     OperationSpecification whereStorage(StorageData storage);
 
-    OperationSpecification whereDateFrom(Date date);
+    OperationSpecification whereDateFrom(LocalDate date);
 
-    OperationSpecification whereDateTo(Date date);
+    OperationSpecification whereDateTo(LocalDate date);
 }

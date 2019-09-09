@@ -1,15 +1,15 @@
 package godev.budgetgo.models.data.abstractions;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface OperationData extends Data {
     StorageData getStorage();
 
     int getMoneyDelta();
 
-    Date getDate();
+    LocalDate getDate();
 
     String getDescription();
 
-    Date getCreationDate();
+    LocalDate getCreationDate();
 }
