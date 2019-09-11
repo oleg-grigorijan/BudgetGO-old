@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public final class Operation implements OperationData {
-    private final int id;
+    private final long id;
     private final StorageData storage;
     private final int moneyDelta;
     private final LocalDate date;
@@ -24,7 +24,7 @@ public final class Operation implements OperationData {
     }
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 

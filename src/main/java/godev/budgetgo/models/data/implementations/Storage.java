@@ -5,7 +5,7 @@ import godev.budgetgo.models.data.abstractions.StorageData;
 import java.util.Objects;
 
 public final class Storage implements StorageData {
-    private final int id;
+    private final long id;
     private final String name;
 
     Storage(StorageBuilder builder) {
@@ -14,7 +14,7 @@ public final class Storage implements StorageData {
     }
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 

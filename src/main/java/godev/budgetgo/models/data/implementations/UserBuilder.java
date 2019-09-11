@@ -4,7 +4,7 @@ import godev.budgetgo.models.data.abstractions.DataBuilder;
 import godev.budgetgo.models.data.abstractions.UserData;
 
 public class UserBuilder implements DataBuilder<UserData> {
-    private int id;
+    private long id;
     private String email = "";
     private String name = "";
     private String surname = "";
@@ -16,12 +16,12 @@ public class UserBuilder implements DataBuilder<UserData> {
         return new User(this);
     }
 
-    int getId() {
+    long getId() {
         return id;
     }
 
     @Override
-    public UserBuilder setId(int id) {
+    public UserBuilder setId(long id) {
         this.id = id;
         return this;
     }

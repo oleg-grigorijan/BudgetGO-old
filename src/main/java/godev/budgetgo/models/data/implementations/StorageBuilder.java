@@ -4,15 +4,15 @@ import godev.budgetgo.models.data.abstractions.DataBuilder;
 import godev.budgetgo.models.data.abstractions.StorageData;
 
 public class StorageBuilder implements DataBuilder<StorageData> {
-    private int id;
+    private long id;
     private String name = "";
 
-    int getId() {
+    long getId() {
         return id;
     }
 
     @Override
-    public StorageBuilder setId(int id) {
+    public StorageBuilder setId(long id) {
         this.id = id;
         return this;
     }

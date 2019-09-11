@@ -5,7 +5,7 @@ import godev.budgetgo.models.data.abstractions.UserData;
 import java.util.Objects;
 
 public final class User implements UserData {
-    private final int id;
+    private final long id;
     private final String email;
     private final String name;
     private final String surname;
@@ -23,7 +23,7 @@ public final class User implements UserData {
 
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 
