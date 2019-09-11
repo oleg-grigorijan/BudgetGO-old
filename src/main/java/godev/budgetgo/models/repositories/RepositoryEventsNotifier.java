@@ -1,4 +1,4 @@
-package godev.budgetgo.models.repositories.abstractions;
+package godev.budgetgo.models.repositories;
 
 public interface RepositoryEventsNotifier<T> {
     void subscribe(RepositoryListener<T> listener);

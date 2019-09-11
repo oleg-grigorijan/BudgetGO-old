@@ -1,6 +1,5 @@
 package godev.budgetgo.models.data;
 
-import godev.budgetgo.models.data.abstractions.UserData;
 import godev.budgetgo.models.data.implementations.UserBuilder;
 import org.junit.jupiter.api.Test;
 

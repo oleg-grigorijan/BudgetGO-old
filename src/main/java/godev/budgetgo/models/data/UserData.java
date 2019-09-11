@@ -1,6 +1,6 @@
-package godev.budgetgo.models.data.abstractions;
+package godev.budgetgo.models.data;
 
-public interface UserData extends Data {
+public interface UserData extends Identifiable {
     String getName();
 
     String getSurname();

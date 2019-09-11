@@ -1,7 +1,7 @@
 package godev.budgetgo.models.data.implementations;
 
-import godev.budgetgo.models.data.abstractions.DataBuilder;
-import godev.budgetgo.models.data.abstractions.StorageData;
+import godev.budgetgo.models.data.DataBuilder;
+import godev.budgetgo.models.data.StorageData;
 
 public class StorageBuilder implements DataBuilder<StorageData> {
     private long id;

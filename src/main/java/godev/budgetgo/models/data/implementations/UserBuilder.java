@@ -1,7 +1,7 @@
 package godev.budgetgo.models.data.implementations;
 
-import godev.budgetgo.models.data.abstractions.DataBuilder;
-import godev.budgetgo.models.data.abstractions.UserData;
+import godev.budgetgo.models.data.DataBuilder;
+import godev.budgetgo.models.data.UserData;
 
 public class UserBuilder implements DataBuilder<UserData> {
     private long id;

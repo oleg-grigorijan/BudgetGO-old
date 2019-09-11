@@ -1,8 +1,8 @@
-package godev.budgetgo.models.data.abstractions;
+package godev.budgetgo.models.data;
 
 import java.time.LocalDate;
 
-public interface OperationData extends Data {
+public interface OperationData extends Identifiable {
     StorageData getStorage();
 
     int getMoneyDelta();

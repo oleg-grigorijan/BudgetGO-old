@@ -1,6 +1,6 @@
 package godev.budgetgo.models.data.implementations;
 
-import godev.budgetgo.models.data.abstractions.StorageData;
+import godev.budgetgo.models.data.StorageData;
 
 import java.util.Objects;
 

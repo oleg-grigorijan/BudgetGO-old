@@ -1,4 +1,4 @@
-package godev.budgetgo.models.repositories.abstractions;
+package godev.budgetgo.models.repositories;
 
 public interface RepositoryListener<T> {
     void onCreate(T newData);

@@ -1,6 +1,5 @@
 package godev.budgetgo.models.data;
 
-import godev.budgetgo.models.data.abstractions.StorageData;
 import godev.budgetgo.models.data.implementations.StorageBuilder;
 import org.junit.jupiter.api.Test;
 
