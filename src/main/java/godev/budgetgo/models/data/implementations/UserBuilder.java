@@ -8,6 +8,8 @@ public class UserBuilder implements DataBuilder<UserData> {
     private String email = "";
     private String name = "";
     private String surname = "";
+    private String passwordHash = "";
+    private String passwordSalt = "";
 
     @Override
     public UserData create() {
@@ -48,6 +50,24 @@ public class UserBuilder implements DataBuilder<UserData> {
 
     public UserBuilder setSurname(String surname) {
         if (surname != null) this.surname = surname;
+        return this;
+    }
+
+    String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public UserBuilder setPasswordHash(String passwordHash) {
+        if (passwordHash != null) this.passwordHash = passwordHash;
+        return this;
+    }
+
+    String getPasswordSalt() {
+        return passwordSalt;
+    }
+
+    public UserBuilder setPasswordSalt(String passwordSalt) {
+        if (passwordSalt != null) this.passwordSalt = passwordSalt;
         return this;
     }
 }

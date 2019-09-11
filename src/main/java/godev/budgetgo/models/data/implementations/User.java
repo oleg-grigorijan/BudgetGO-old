@@ -9,12 +9,16 @@ public final class User implements UserData {
     private final String email;
     private final String name;
     private final String surname;
+    private final String passwordHash;
+    private final String passwordSalt;
 
     User(UserBuilder builder) {
         id = builder.getId();
         email = builder.getEmail();
         name = builder.getName();
         surname = builder.getSurname();
+        passwordHash = builder.getPasswordHash();
+        passwordSalt = builder.getPasswordSalt();
     }
 
 
@@ -39,6 +43,16 @@ public final class User implements UserData {
     }
 
     @Override
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    @Override
+    public String getPasswordSalt() {
+        return passwordSalt;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
@@ -48,9 +62,9 @@ public final class User implements UserData {
                 name.equals(user.name) &&
                 surname.equals(user.surname);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id, email, name, surname);
     }
+
 }

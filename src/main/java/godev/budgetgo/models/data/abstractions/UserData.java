@@ -6,4 +6,8 @@ public interface UserData extends Data {
     String getSurname();
 
     String getEmail();
+
+    String getPasswordHash();
+
+    String getPasswordSalt();
 }
