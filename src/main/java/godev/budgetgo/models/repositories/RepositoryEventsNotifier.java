@@ -1,7 +1,10 @@
 package godev.budgetgo.models.repositories;
 
-public interface RepositoryEventsNotifier<T> {
-    void subscribe(RepositoryListener<T> listener);
+import godev.budgetgo.models.data.Identifiable;
 
-    void unsubscribe(RepositoryListener listener);
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
+public interface RepositoryEventsNotifier<T extends Identifiable> {
+    void subscribe(Consumer<T> onAdd, Consumer<T> onRemove, BiConsumer<T, T> onUpdate);
 }

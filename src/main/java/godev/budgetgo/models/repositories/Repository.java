@@ -1,19 +1,20 @@
 package godev.budgetgo.models.repositories;
 
-import godev.budgetgo.models.data.DataBuilder;
 import godev.budgetgo.models.data.Identifiable;
 import godev.budgetgo.models.data.Specification;
 
 import java.util.List;
 
-public interface Repository<T extends Identifiable, V extends Specification> {
-    T create(DataBuilder<T> newDataBuilder);
+public interface Repository<T extends Identifiable, V extends Specification<T>> extends RepositoryEventsNotifier<T> {
+    T add(T entity);
 
-    void remove(T data);
+    void remove(T entity);
 
-    T edit(T oldData, DataBuilder<T> newDataBuilder);
+    void removeAll(V spec);
 
-    List<T> get(V spec);
+    void update(T updatedEntity);
 
-    V createSpecification();
+    T get(long id);
+
+    List<T> getAll(V spec);
 }
