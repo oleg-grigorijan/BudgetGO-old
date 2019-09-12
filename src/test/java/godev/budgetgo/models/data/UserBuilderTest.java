@@ -38,7 +38,7 @@ class UserBuilderTest {
     void userDefaultCreation() {
         UserData user = new UserBuilder().create();
 
-        assertEquals(0, user.getId());
+        assertEquals(-1, user.getId());
         assertEquals("", user.getEmail());
         assertEquals("", user.getName());
         assertEquals("", user.getSurname());
@@ -63,5 +63,28 @@ class UserBuilderTest {
         assertEquals("", user.getSurname());
         assertEquals("", user.getPasswordHash());
         assertEquals("", user.getPasswordSalt());
+    }
+
+    @Test
+    void userCreationFromAnother() {
+        int id = 1;
+        String email = "oleg.grigorijan@gmail.com";
+        String name = "Oleg";
+        String surname = "Grigorijan";
+        String passwordHash = "PasswordHashExample";
+        String passwordSalt = "PasswordSaltExample";
+
+        UserData existingUser = new UserBuilder()
+                .setId(id)
+                .setEmail(email)
+                .setName(name)
+                .setSurname(surname)
+                .setPasswordHash(passwordHash)
+                .setPasswordSalt(passwordSalt)
+                .create();
+
+        UserData user = new UserBuilder().from(existingUser).create();
+
+        assertEquals(existingUser, user);
     }
 }

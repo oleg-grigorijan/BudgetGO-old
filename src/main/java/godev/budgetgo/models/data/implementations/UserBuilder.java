@@ -4,12 +4,23 @@ import godev.budgetgo.models.data.DataBuilder;
 import godev.budgetgo.models.data.UserData;
 
 public class UserBuilder implements DataBuilder<UserData> {
-    private long id;
+    private long id = -1;
     private String email = "";
     private String name = "";
     private String surname = "";
     private String passwordHash = "";
     private String passwordSalt = "";
+
+    @Override
+    public UserBuilder from(UserData entity) {
+        id = entity.getId();
+        email = entity.getEmail();
+        name = entity.getName();
+        surname = entity.getSurname();
+        passwordHash = entity.getPasswordHash();
+        passwordSalt = entity.getPasswordSalt();
+        return this;
+    }
 
     @Override
     public UserData create() {

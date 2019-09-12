@@ -8,9 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StorageBuilder implements DataBuilder<StorageData> {
-    private long id;
+    private long id = -1;
     private String name = "";
     private List<UserData> users = new ArrayList<>();
+
+    @Override
+    public StorageBuilder from(StorageData entity) {
+        id = entity.getId();
+        name = entity.getName();
+        users = entity.getUsers();
+        return this;
+    }
 
     long getId() {
         return id;

@@ -40,7 +40,7 @@ class OperationBuilderTest {
     void operationDefaultCreation() {
         OperationData operation = new OperationBuilder().create();
 
-        assertEquals(0, operation.getId());
+        assertEquals(-1, operation.getId());
         assertEquals(new StorageBuilder().create(), operation.getStorage());
         assertEquals(0, operation.getMoneyDelta());
         assertEquals(LocalDate.now(), operation.getDate());
@@ -65,5 +65,28 @@ class OperationBuilderTest {
         assertEquals(LocalDate.now(), operation.getDate());
         assertEquals("", operation.getDescription());
         assertEquals(LocalDate.now(), operation.getCreationDate());
+    }
+
+    @Test
+    void operationCreationFromAnother() {
+        int id = 1;
+        StorageData storage = new StorageBuilder().setId(1).setName("My cash").create();
+        int moneyDelta = -2000;
+        LocalDate date = LocalDate.of(2019, 9, 9);
+        String description = "My description";
+        LocalDate creationDate = LocalDate.of(2019, 1, 9);
+
+        OperationData existingOperation = new OperationBuilder()
+                .setId(id)
+                .setStorage(storage)
+                .setMoneyDelta(moneyDelta)
+                .setDate(date)
+                .setDescription(description)
+                .setCreationDate(creationDate)
+                .create();
+
+        OperationData operation = new OperationBuilder().from(existingOperation).create();
+
+        assertEquals(existingOperation, operation);
     }
 }

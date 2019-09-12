@@ -8,15 +8,22 @@ import java.time.LocalDate;
 
 
 public class OperationBuilder implements DataBuilder<OperationData> {
-    private long id;
-    private StorageData storage;
-    private int moneyDelta;
+    private long id = -1;
+    private StorageData storage = new StorageBuilder().create();
+    private int moneyDelta = 0;
     private LocalDate date = LocalDate.now();
     private String description = "";
     private LocalDate creationDate = LocalDate.now();
 
-    public OperationBuilder() {
-        storage = new StorageBuilder().create();
+    @Override
+    public OperationBuilder from(OperationData entity) {
+        id = entity.getId();
+        storage = entity.getStorage();
+        moneyDelta = entity.getMoneyDelta();
+        date = entity.getDate();
+        description = entity.getDescription();
+        creationDate = entity.getCreationDate();
+        return this;
     }
 
     long getId() {
