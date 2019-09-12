@@ -33,7 +33,8 @@ public class StorageBuilder implements DataBuilder<Storage> {
     }
 
     public StorageBuilder setName(String name) {
-        if (name != null) this.name = name;
+        if (name == null) throw new NullPointerException();
+        this.name = name;
         return this;
     }
 
@@ -42,7 +43,8 @@ public class StorageBuilder implements DataBuilder<Storage> {
     }
 
     public StorageBuilder addUser(User user) {
-        if (user != null) users.add(user);
+        if (user == null) throw new NullPointerException();
+        users.add(user);
         return this;
     }
 

@@ -41,7 +41,8 @@ public class UserBuilder implements DataBuilder<User> {
     }
 
     public UserBuilder setEmail(String email) {
-        if (email != null) this.email = email;
+        if (email == null) throw new NullPointerException();
+        this.email = email;
         return this;
     }
 
@@ -50,7 +51,8 @@ public class UserBuilder implements DataBuilder<User> {
     }
 
     public UserBuilder setName(String name) {
-        if (name != null) this.name = name;
+        if (name == null) throw new NullPointerException();
+        this.name = name;
         return this;
     }
 
@@ -59,7 +61,8 @@ public class UserBuilder implements DataBuilder<User> {
     }
 
     public UserBuilder setSurname(String surname) {
-        if (surname != null) this.surname = surname;
+        if (surname == null) throw new NullPointerException();
+        this.surname = surname;
         return this;
     }
 
@@ -68,7 +71,8 @@ public class UserBuilder implements DataBuilder<User> {
     }
 
     public UserBuilder setPasswordHash(String passwordHash) {
-        if (passwordHash != null) this.passwordHash = passwordHash;
+        if (passwordHash == null) throw new NullPointerException();
+        this.passwordHash = passwordHash;
         return this;
     }
 
@@ -77,7 +81,8 @@ public class UserBuilder implements DataBuilder<User> {
     }
 
     public UserBuilder setPasswordSalt(String passwordSalt) {
-        if (passwordSalt != null) this.passwordSalt = passwordSalt;
+        if (passwordSalt == null) throw new NullPointerException();
+        this.passwordSalt = passwordSalt;
         return this;
     }
 }

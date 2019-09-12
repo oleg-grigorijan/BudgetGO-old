@@ -39,7 +39,8 @@ public class OperationBuilder implements DataBuilder<Operation> {
     }
 
     public OperationBuilder setStorage(Storage storage) {
-        if (storage != null) this.storage = storage;
+        if (storage == null) throw new NullPointerException();
+        this.storage = storage;
         return this;
     }
 
@@ -57,7 +58,8 @@ public class OperationBuilder implements DataBuilder<Operation> {
     }
 
     public OperationBuilder setDate(LocalDate date) {
-        if (date != null) this.date = date;
+        if (date == null) throw new NullPointerException();
+        this.date = date;
         return this;
     }
 
@@ -66,7 +68,8 @@ public class OperationBuilder implements DataBuilder<Operation> {
     }
 
     public OperationBuilder setDescription(String description) {
-        if (description != null) this.description = description;
+        if (description == null) throw new NullPointerException();
+        this.description = description;
         return this;
     }
 
@@ -75,7 +78,8 @@ public class OperationBuilder implements DataBuilder<Operation> {
     }
 
     public OperationBuilder setCreationDate(LocalDate creationDate) {
-        if (creationDate != null) this.creationDate = creationDate;
+        if (creationDate == null) throw new NullPointerException();
+        this.creationDate = creationDate;
         return this;
     }
 

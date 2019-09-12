@@ -5,6 +5,7 @@ import godev.budgetgo.models.data.implementations.UserBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserBuilderTest {
 
@@ -49,21 +50,13 @@ class UserBuilderTest {
 
     @Test
     void userCreationWithNulls() {
-        User user = new UserBuilder()
-                .setId(0)
-                .setEmail(null)
-                .setName(null)
-                .setSurname(null)
-                .setPasswordHash(null)
-                .setPasswordSalt(null)
-                .create();
+        UserBuilder builder = new UserBuilder();
 
-        assertEquals(0, user.getId());
-        assertEquals("", user.getEmail());
-        assertEquals("", user.getName());
-        assertEquals("", user.getSurname());
-        assertEquals("", user.getPasswordHash());
-        assertEquals("", user.getPasswordSalt());
+        assertThrows(NullPointerException.class, () -> builder.setEmail(null));
+        assertThrows(NullPointerException.class, () -> builder.setName(null));
+        assertThrows(NullPointerException.class, () -> builder.setSurname(null));
+        assertThrows(NullPointerException.class, () -> builder.setPasswordHash(null));
+        assertThrows(NullPointerException.class, () -> builder.setPasswordSalt(null));
     }
 
     @Test

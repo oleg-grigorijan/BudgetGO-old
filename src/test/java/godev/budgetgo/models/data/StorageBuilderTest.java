@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class StorageBuilderTest {
 
@@ -48,15 +47,10 @@ class StorageBuilderTest {
 
     @Test
     void storageCreationWithNulls() {
-        Storage storage = new StorageBuilder()
-                .setId(0)
-                .setName(null)
-                .addUser(null)
-                .create();
+        StorageBuilder builder = new StorageBuilder();
 
-        assertEquals(0, storage.getId());
-        assertEquals("", storage.getName());
-        assertTrue(storage.getUsers().isEmpty());
+        assertThrows(NullPointerException.class, () -> builder.setName(null));
+        assertThrows(NullPointerException.class, () -> builder.addUser(null));
     }
 
     @Test

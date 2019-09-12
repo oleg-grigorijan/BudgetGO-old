@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OperationBuilderTest {
 
@@ -52,21 +53,12 @@ class OperationBuilderTest {
 
     @Test
     void operationCreationWithNulls() {
-        Operation operation = new OperationBuilder()
-                .setId(0)
-                .setStorage(null)
-                .setMoneyDelta(0)
-                .setDate(null)
-                .setDescription(null)
-                .setCreationDate(null)
-                .create();
+        OperationBuilder builder = new OperationBuilder();
 
-        assertEquals(0, operation.getId());
-        assertEquals(new StorageBuilder().create(), operation.getStorage());
-        assertEquals(0, operation.getMoneyDelta());
-        assertEquals(LocalDate.now(), operation.getDate());
-        assertEquals("", operation.getDescription());
-        assertEquals(LocalDate.now(), operation.getCreationDate());
+        assertThrows(NullPointerException.class, () -> builder.setStorage(null));
+        assertThrows(NullPointerException.class, () -> builder.setDate(null));
+        assertThrows(NullPointerException.class, () -> builder.setDescription(null));
+        assertThrows(NullPointerException.class, () -> builder.setCreationDate(null));
     }
 
     @Test
