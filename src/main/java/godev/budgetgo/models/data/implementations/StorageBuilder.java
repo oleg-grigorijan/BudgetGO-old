@@ -2,13 +2,13 @@ package godev.budgetgo.models.data.implementations;
 
 import godev.budgetgo.models.data.DataBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class StorageBuilder implements DataBuilder<Storage> {
     private long id = -1;
     private String name = "";
-    private List<User> users = new ArrayList<>();
+    private Set<User> users = new HashSet<>();
 
     @Override
     public StorageBuilder from(Storage entity) {
@@ -38,7 +38,7 @@ public class StorageBuilder implements DataBuilder<Storage> {
         return this;
     }
 
-    List<User> getUsers() {
+    Set<User> getUsers() {
         return users;
     }
 

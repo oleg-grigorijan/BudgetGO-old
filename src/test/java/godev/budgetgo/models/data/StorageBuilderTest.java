@@ -7,6 +7,7 @@ import godev.budgetgo.models.data.implementations.UserBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +34,7 @@ class StorageBuilderTest {
 
         assertEquals(id, storage.getId());
         assertEquals(name, storage.getName());
-        assertEquals(Arrays.asList(users), storage.getUsers());
+        assertEquals(new HashSet<>(Arrays.asList(users)), storage.getUsers());
     }
 
     @Test

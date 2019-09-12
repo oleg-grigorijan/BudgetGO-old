@@ -3,18 +3,18 @@ package godev.budgetgo.models.data.implementations;
 import godev.budgetgo.models.data.Identifiable;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public final class Storage implements Identifiable {
     private final long id;
     private final String name;
-    private final List<User> users;
+    private final Set<User> users;
 
     Storage(StorageBuilder builder) {
         id = builder.getId();
         name = builder.getName();
-        users = Collections.unmodifiableList(builder.getUsers());
+        users = Collections.unmodifiableSet(builder.getUsers());
     }
 
     @Override
@@ -26,7 +26,7 @@ public final class Storage implements Identifiable {
         return name;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
