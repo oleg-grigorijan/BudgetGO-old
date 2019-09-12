@@ -1,19 +1,17 @@
 package godev.budgetgo.models.data.implementations;
 
 import godev.budgetgo.models.data.DataBuilder;
-import godev.budgetgo.models.data.StorageData;
-import godev.budgetgo.models.data.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StorageBuilder implements DataBuilder<StorageData> {
+public class StorageBuilder implements DataBuilder<Storage> {
     private long id = -1;
     private String name = "";
-    private List<UserData> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     @Override
-    public StorageBuilder from(StorageData entity) {
+    public StorageBuilder from(Storage entity) {
         id = entity.getId();
         name = entity.getName();
         users = entity.getUsers();
@@ -39,17 +37,17 @@ public class StorageBuilder implements DataBuilder<StorageData> {
         return this;
     }
 
-    List<UserData> getUsers() {
+    List<User> getUsers() {
         return users;
     }
 
-    public StorageBuilder addUser(UserData user) {
+    public StorageBuilder addUser(User user) {
         if (user != null) users.add(user);
         return this;
     }
 
     @Override
-    public StorageData create() {
+    public Storage create() {
         return new Storage(this);
     }
 }

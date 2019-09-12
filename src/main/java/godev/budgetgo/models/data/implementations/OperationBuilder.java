@@ -1,22 +1,20 @@
 package godev.budgetgo.models.data.implementations;
 
 import godev.budgetgo.models.data.DataBuilder;
-import godev.budgetgo.models.data.OperationData;
-import godev.budgetgo.models.data.StorageData;
 
 import java.time.LocalDate;
 
 
-public class OperationBuilder implements DataBuilder<OperationData> {
+public class OperationBuilder implements DataBuilder<Operation> {
     private long id = -1;
-    private StorageData storage = new StorageBuilder().create();
+    private Storage storage = new StorageBuilder().create();
     private int moneyDelta = 0;
     private LocalDate date = LocalDate.now();
     private String description = "";
     private LocalDate creationDate = LocalDate.now();
 
     @Override
-    public OperationBuilder from(OperationData entity) {
+    public OperationBuilder from(Operation entity) {
         id = entity.getId();
         storage = entity.getStorage();
         moneyDelta = entity.getMoneyDelta();
@@ -36,11 +34,11 @@ public class OperationBuilder implements DataBuilder<OperationData> {
         return this;
     }
 
-    StorageData getStorage() {
+    Storage getStorage() {
         return storage;
     }
 
-    public OperationBuilder setStorage(StorageData storage) {
+    public OperationBuilder setStorage(Storage storage) {
         if (storage != null) this.storage = storage;
         return this;
     }
@@ -82,7 +80,7 @@ public class OperationBuilder implements DataBuilder<OperationData> {
     }
 
     @Override
-    public OperationData create() {
+    public Operation create() {
         return new Operation(this);
     }
 }

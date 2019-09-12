@@ -1,14 +1,13 @@
 package godev.budgetgo.models.data.implementations;
 
-import godev.budgetgo.models.data.OperationData;
-import godev.budgetgo.models.data.StorageData;
+import godev.budgetgo.models.data.Identifiable;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-public final class Operation implements OperationData {
+public final class Operation implements Identifiable {
     private final long id;
-    private final StorageData storage;
+    private final Storage storage;
     private final int moneyDelta;
     private final LocalDate date;
     private final String description;
@@ -28,27 +27,22 @@ public final class Operation implements OperationData {
         return id;
     }
 
-    @Override
-    public StorageData getStorage() {
+    public Storage getStorage() {
         return storage;
     }
 
-    @Override
     public int getMoneyDelta() {
         return moneyDelta;
     }
 
-    @Override
     public LocalDate getDate() {
         return date;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
     public LocalDate getCreationDate() {
         return creationDate;
     }

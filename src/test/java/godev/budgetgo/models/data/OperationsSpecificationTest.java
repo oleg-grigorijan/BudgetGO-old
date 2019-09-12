@@ -1,8 +1,6 @@
 package godev.budgetgo.models.data;
 
-import godev.budgetgo.models.data.implementations.OperationBuilder;
-import godev.budgetgo.models.data.implementations.OperationsSpecification;
-import godev.budgetgo.models.data.implementations.StorageBuilder;
+import godev.budgetgo.models.data.implementations.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -14,18 +12,18 @@ class OperationsSpecificationTest {
     @Test
     void fullSpecificationTest() {
         long id = 1;
-        StorageData storage = new StorageBuilder().setId(1).create();
+        Storage storage = new StorageBuilder().setId(1).create();
         LocalDate dateFrom = LocalDate.of(2019, 9, 10);
         LocalDate dateTo = LocalDate.of(2019, 9, 12);
 
-        Specification<OperationData> specification = new OperationsSpecification()
+        Specification<Operation> specification = new OperationsSpecification()
                 .whereId(id)
                 .whereStorage(storage)
                 .whereDateFrom(dateFrom)
                 .whereDateTo(dateTo);
 
         OperationBuilder operationBuilder = new OperationBuilder().setId(id).setStorage(storage);
-        OperationData[] correctOperations = {
+        Operation[] correctOperations = {
                 operationBuilder
                         .setDate(dateFrom)
                         .create(),
@@ -36,7 +34,7 @@ class OperationsSpecificationTest {
                         .setDate(dateFrom.plusDays(1))
                         .create()
         };
-        OperationData[] incorrectOperations = {
+        Operation[] incorrectOperations = {
                 operationBuilder
                         .setId(id + 1)
                         .create(),
@@ -54,15 +52,15 @@ class OperationsSpecificationTest {
                 new OperationBuilder().create()
         };
 
-        for (OperationData o : correctOperations) assertTrue(specification.specified(o));
-        for (OperationData o : incorrectOperations) assertFalse(specification.specified(o));
+        for (Operation o : correctOperations) assertTrue(specification.specified(o));
+        for (Operation o : incorrectOperations) assertFalse(specification.specified(o));
     }
 
     @Test
     void emptySpecificationTest() {
-        Specification<OperationData> specification = new OperationsSpecification();
+        Specification<Operation> specification = new OperationsSpecification();
 
-        OperationData[] operations = {
+        Operation[] operations = {
                 new OperationBuilder()
                         .setId(1)
                         .setStorage(new StorageBuilder().create())
@@ -72,7 +70,7 @@ class OperationsSpecificationTest {
                         .create()
         };
 
-        for (OperationData o : operations) assertTrue(specification.specified(o));
+        for (Operation o : operations) assertTrue(specification.specified(o));
     }
 
 }

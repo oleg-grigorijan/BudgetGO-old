@@ -1,14 +1,12 @@
 package godev.budgetgo.models.data.implementations;
 
-import godev.budgetgo.models.data.OperationData;
 import godev.budgetgo.models.data.Specification;
-import godev.budgetgo.models.data.StorageData;
 
 import java.time.LocalDate;
 
-public class OperationsSpecification implements Specification<OperationData> {
+public class OperationsSpecification implements Specification<Operation> {
     private Long id;
-    private StorageData storage;
+    private Storage storage;
     private LocalDate dateFrom;
     private LocalDate dateTo;
 
@@ -21,12 +19,12 @@ public class OperationsSpecification implements Specification<OperationData> {
         return id;
     }
 
-    public OperationsSpecification whereStorage(StorageData storage) {
+    public OperationsSpecification whereStorage(Storage storage) {
         this.storage = storage;
         return this;
     }
 
-    public StorageData getStorage() {
+    public Storage getStorage() {
         return storage;
     }
 
@@ -49,7 +47,7 @@ public class OperationsSpecification implements Specification<OperationData> {
     }
 
     @Override
-    public boolean specified(OperationData entity) {
+    public boolean specified(Operation entity) {
         return (id == null || entity.getId() == id)
                 && (storage == null || entity.getStorage().equals(storage))
                 && (dateFrom == null || entity.getDate().compareTo(dateFrom) >= 0)

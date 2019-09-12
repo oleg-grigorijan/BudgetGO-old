@@ -1,6 +1,8 @@
 package godev.budgetgo.models.data;
 
+import godev.budgetgo.models.data.implementations.Storage;
 import godev.budgetgo.models.data.implementations.StorageBuilder;
+import godev.budgetgo.models.data.implementations.User;
 import godev.budgetgo.models.data.implementations.UserBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -16,13 +18,13 @@ class StorageBuilderTest {
         int id = 1;
         String name = "My cash";
         UserBuilder userBuilder = new UserBuilder();
-        UserData[] users = {
+        User[] users = {
                 userBuilder.setId(1).create(),
                 userBuilder.setId(2).create(),
                 userBuilder.setId(3).create(),
         };
 
-        StorageData storage = new StorageBuilder()
+        Storage storage = new StorageBuilder()
                 .setId(id)
                 .setName(name)
                 .addUser(users[0])
@@ -37,7 +39,7 @@ class StorageBuilderTest {
 
     @Test
     void storageDefaultCreation() {
-        StorageData storage = new StorageBuilder().create();
+        Storage storage = new StorageBuilder().create();
 
         assertEquals(-1, storage.getId());
         assertEquals("", storage.getName());
@@ -46,7 +48,7 @@ class StorageBuilderTest {
 
     @Test
     void storageCreationWithNulls() {
-        StorageData storage = new StorageBuilder()
+        Storage storage = new StorageBuilder()
                 .setId(0)
                 .setName(null)
                 .addUser(null)
@@ -62,13 +64,13 @@ class StorageBuilderTest {
         int id = 1;
         String name = "My cash";
         UserBuilder userBuilder = new UserBuilder();
-        UserData[] users = {
+        User[] users = {
                 userBuilder.setId(1).create(),
                 userBuilder.setId(2).create(),
                 userBuilder.setId(3).create(),
         };
 
-        StorageData existingStorage = new StorageBuilder()
+        Storage existingStorage = new StorageBuilder()
                 .setId(id)
                 .setName(name)
                 .addUser(users[0])
@@ -76,7 +78,7 @@ class StorageBuilderTest {
                 .addUser(users[2])
                 .create();
 
-        StorageData storage = new StorageBuilder().from(existingStorage).create();
+        Storage storage = new StorageBuilder().from(existingStorage).create();
 
         assertEquals(existingStorage, storage);
     }

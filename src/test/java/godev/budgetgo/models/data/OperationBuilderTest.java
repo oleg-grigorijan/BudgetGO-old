@@ -1,6 +1,8 @@
 package godev.budgetgo.models.data;
 
+import godev.budgetgo.models.data.implementations.Operation;
 import godev.budgetgo.models.data.implementations.OperationBuilder;
+import godev.budgetgo.models.data.implementations.Storage;
 import godev.budgetgo.models.data.implementations.StorageBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -13,13 +15,13 @@ class OperationBuilderTest {
     @Test
     void operationSimpleCreation() {
         int id = 1;
-        StorageData storage = new StorageBuilder().setId(1).setName("My cash").create();
+        Storage storage = new StorageBuilder().setId(1).setName("My cash").create();
         int moneyDelta = -2000;
         LocalDate date = LocalDate.of(2019, 9, 9);
         String description = "My description";
         LocalDate creationDate = LocalDate.of(2019, 1, 9);
 
-        OperationData operation = new OperationBuilder()
+        Operation operation = new OperationBuilder()
                 .setId(id)
                 .setStorage(storage)
                 .setMoneyDelta(moneyDelta)
@@ -38,7 +40,7 @@ class OperationBuilderTest {
 
     @Test
     void operationDefaultCreation() {
-        OperationData operation = new OperationBuilder().create();
+        Operation operation = new OperationBuilder().create();
 
         assertEquals(-1, operation.getId());
         assertEquals(new StorageBuilder().create(), operation.getStorage());
@@ -50,7 +52,7 @@ class OperationBuilderTest {
 
     @Test
     void operationCreationWithNulls() {
-        OperationData operation = new OperationBuilder()
+        Operation operation = new OperationBuilder()
                 .setId(0)
                 .setStorage(null)
                 .setMoneyDelta(0)
@@ -70,13 +72,13 @@ class OperationBuilderTest {
     @Test
     void operationCreationFromAnother() {
         int id = 1;
-        StorageData storage = new StorageBuilder().setId(1).setName("My cash").create();
+        Storage storage = new StorageBuilder().setId(1).setName("My cash").create();
         int moneyDelta = -2000;
         LocalDate date = LocalDate.of(2019, 9, 9);
         String description = "My description";
         LocalDate creationDate = LocalDate.of(2019, 1, 9);
 
-        OperationData existingOperation = new OperationBuilder()
+        Operation existingOperation = new OperationBuilder()
                 .setId(id)
                 .setStorage(storage)
                 .setMoneyDelta(moneyDelta)
@@ -85,7 +87,7 @@ class OperationBuilderTest {
                 .setCreationDate(creationDate)
                 .create();
 
-        OperationData operation = new OperationBuilder().from(existingOperation).create();
+        Operation operation = new OperationBuilder().from(existingOperation).create();
 
         assertEquals(existingOperation, operation);
     }

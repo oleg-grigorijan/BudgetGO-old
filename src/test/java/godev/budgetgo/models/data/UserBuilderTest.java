@@ -1,5 +1,6 @@
 package godev.budgetgo.models.data;
 
+import godev.budgetgo.models.data.implementations.User;
 import godev.budgetgo.models.data.implementations.UserBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ class UserBuilderTest {
         String passwordHash = "PasswordHashExample";
         String passwordSalt = "PasswordSaltExample";
 
-        UserData user = new UserBuilder()
+        User user = new UserBuilder()
                 .setId(id)
                 .setEmail(email)
                 .setName(name)
@@ -36,7 +37,7 @@ class UserBuilderTest {
 
     @Test
     void userDefaultCreation() {
-        UserData user = new UserBuilder().create();
+        User user = new UserBuilder().create();
 
         assertEquals(-1, user.getId());
         assertEquals("", user.getEmail());
@@ -48,7 +49,7 @@ class UserBuilderTest {
 
     @Test
     void userCreationWithNulls() {
-        UserData user = new UserBuilder()
+        User user = new UserBuilder()
                 .setId(0)
                 .setEmail(null)
                 .setName(null)
@@ -74,7 +75,7 @@ class UserBuilderTest {
         String passwordHash = "PasswordHashExample";
         String passwordSalt = "PasswordSaltExample";
 
-        UserData existingUser = new UserBuilder()
+        User existingUser = new UserBuilder()
                 .setId(id)
                 .setEmail(email)
                 .setName(name)
@@ -83,7 +84,7 @@ class UserBuilderTest {
                 .setPasswordSalt(passwordSalt)
                 .create();
 
-        UserData user = new UserBuilder().from(existingUser).create();
+        User user = new UserBuilder().from(existingUser).create();
 
         assertEquals(existingUser, user);
     }

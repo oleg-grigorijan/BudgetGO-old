@@ -1,16 +1,15 @@
 package godev.budgetgo.models.data.implementations;
 
-import godev.budgetgo.models.data.StorageData;
-import godev.budgetgo.models.data.UserData;
+import godev.budgetgo.models.data.Identifiable;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public final class Storage implements StorageData {
+public final class Storage implements Identifiable {
     private final long id;
     private final String name;
-    private final List<UserData> users;
+    private final List<User> users;
 
     Storage(StorageBuilder builder) {
         id = builder.getId();
@@ -23,13 +22,11 @@ public final class Storage implements StorageData {
         return id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
-    public List<UserData> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 

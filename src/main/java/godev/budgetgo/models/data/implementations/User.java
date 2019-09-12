@@ -1,10 +1,10 @@
 package godev.budgetgo.models.data.implementations;
 
-import godev.budgetgo.models.data.UserData;
+import godev.budgetgo.models.data.Identifiable;
 
 import java.util.Objects;
 
-public final class User implements UserData {
+public final class User implements Identifiable {
     private final long id;
     private final String email;
     private final String name;
@@ -21,33 +21,27 @@ public final class User implements UserData {
         passwordSalt = builder.getPasswordSalt();
     }
 
-
     @Override
     public long getId() {
         return id;
     }
 
-    @Override
     public String getEmail() {
         return email;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public String getSurname() {
         return surname;
     }
 
-    @Override
     public String getPasswordHash() {
         return passwordHash;
     }
 
-    @Override
     public String getPasswordSalt() {
         return passwordSalt;
     }

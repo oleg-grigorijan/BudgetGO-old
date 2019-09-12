@@ -1,9 +1,8 @@
 package godev.budgetgo.models.data.implementations;
 
 import godev.budgetgo.models.data.DataBuilder;
-import godev.budgetgo.models.data.UserData;
 
-public class UserBuilder implements DataBuilder<UserData> {
+public class UserBuilder implements DataBuilder<User> {
     private long id = -1;
     private String email = "";
     private String name = "";
@@ -12,7 +11,7 @@ public class UserBuilder implements DataBuilder<UserData> {
     private String passwordSalt = "";
 
     @Override
-    public UserBuilder from(UserData entity) {
+    public UserBuilder from(User entity) {
         id = entity.getId();
         email = entity.getEmail();
         name = entity.getName();
@@ -23,7 +22,7 @@ public class UserBuilder implements DataBuilder<UserData> {
     }
 
     @Override
-    public UserData create() {
+    public User create() {
         return new User(this);
     }
 

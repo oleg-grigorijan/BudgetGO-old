@@ -1,12 +1,10 @@
 package godev.budgetgo.models.data.implementations;
 
 import godev.budgetgo.models.data.Specification;
-import godev.budgetgo.models.data.StorageData;
-import godev.budgetgo.models.data.UserData;
 
-public class StoragesSpecification implements Specification<StorageData> {
+public class StoragesSpecification implements Specification<Storage> {
     private Long id;
-    private UserData user;
+    private User user;
 
     public StoragesSpecification whereId(Long id) {
         this.id = id;
@@ -17,17 +15,17 @@ public class StoragesSpecification implements Specification<StorageData> {
         return id;
     }
 
-    public StoragesSpecification whereUser(UserData user) {
+    public StoragesSpecification whereUser(User user) {
         this.user = user;
         return this;
     }
 
-    public UserData getUser() {
+    public User getUser() {
         return user;
     }
 
     @Override
-    public boolean specified(StorageData entity) {
+    public boolean specified(Storage entity) {
         return (id == null || entity.getId() == id)
                 && (user == null || entity.getUsers().contains(user));
     }

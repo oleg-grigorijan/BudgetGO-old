@@ -1,8 +1,6 @@
 package godev.budgetgo.models.data;
 
-import godev.budgetgo.models.data.implementations.StorageBuilder;
-import godev.budgetgo.models.data.implementations.StoragesSpecification;
-import godev.budgetgo.models.data.implementations.UserBuilder;
+import godev.budgetgo.models.data.implementations.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,18 +11,18 @@ class StoragesSpecificationTest {
     void fullSpecificationTest() {
         long storageId = 1;
         long userId = 1;
-        DataBuilder<UserData> userBuilder = new UserBuilder().setId(userId);
+        DataBuilder<User> userBuilder = new UserBuilder().setId(userId);
 
-        Specification<StorageData> specification = new StoragesSpecification()
+        Specification<Storage> specification = new StoragesSpecification()
                 .whereId(storageId)
                 .whereUser(userBuilder.create());
 
-        StorageData correctStorage = new StorageBuilder()
+        Storage correctStorage = new StorageBuilder()
                 .setId(storageId)
                 .addUser(userBuilder.create())
                 .create();
 
-        StorageData[] incorrectStorages = {
+        Storage[] incorrectStorages = {
                 new StorageBuilder()
                         .setId(storageId + 1)
                         .addUser(userBuilder.create())
@@ -40,17 +38,17 @@ class StoragesSpecificationTest {
         };
 
         assertTrue(specification.specified(correctStorage));
-        for (StorageData s : incorrectStorages) assertFalse(specification.specified(s));
+        for (Storage s : incorrectStorages) assertFalse(specification.specified(s));
     }
 
     @Test
     void emptySpecificationTest() {
-        Specification<StorageData> specification = new StoragesSpecification();
+        Specification<Storage> specification = new StoragesSpecification();
 
         long storageId = 1;
         long userId = 1;
-        DataBuilder<UserData> userBuilder = new UserBuilder().setId(userId);
-        StorageData[] storages = {
+        DataBuilder<User> userBuilder = new UserBuilder().setId(userId);
+        Storage[] storages = {
                 new StorageBuilder()
                         .setId(storageId)
                         .addUser(userBuilder.create())
@@ -69,6 +67,6 @@ class StoragesSpecificationTest {
                 new StorageBuilder().create()
         };
 
-        for (StorageData s : storages) assertTrue(specification.specified(s));
+        for (Storage s : storages) assertTrue(specification.specified(s));
     }
 }

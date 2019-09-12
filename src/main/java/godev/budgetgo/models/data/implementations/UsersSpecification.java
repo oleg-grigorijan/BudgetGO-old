@@ -1,9 +1,8 @@
 package godev.budgetgo.models.data.implementations;
 
 import godev.budgetgo.models.data.Specification;
-import godev.budgetgo.models.data.UserData;
 
-public class UsersSpecification implements Specification<UserData> {
+public class UsersSpecification implements Specification<User> {
     private Long id;
     private String email;
 
@@ -26,7 +25,7 @@ public class UsersSpecification implements Specification<UserData> {
     }
 
     @Override
-    public boolean specified(UserData entity) {
+    public boolean specified(User entity) {
         return (id == null || entity.getId() == id)
                 && (email == null || entity.getEmail().equals(email));
     }
