@@ -53,6 +53,13 @@ abstract class MySqlRepository<T extends Identifiable, S extends Specification<T
 
     @Override
     public List<T> getAll(S spec) {
+        if (spec.getId() != null) {
+            List<T> result = new ArrayList<>(1);
+            T entity = get(spec.getId());
+            if (entity != null && spec.specified(entity)) result.add(entity);
+            return result;
+        }
+
         Conditions conditions = conditionsFactory.createFrom(spec);
 
         try (Connection connection = connectionFactory.createConnection();
@@ -94,6 +101,12 @@ abstract class MySqlRepository<T extends Identifiable, S extends Specification<T
 
     @Override
     public void removeAll(S spec) {
+        if (spec.getId() != null) {
+            T entity = get(spec.getId());
+            if (entity != null && spec.specified(entity)) remove(entity);
+            return;
+        }
+
         Conditions conditions = conditionsFactory.createFrom(spec);
 
         try (Connection connection = connectionFactory.createConnection();
@@ -133,7 +146,6 @@ abstract class MySqlRepository<T extends Identifiable, S extends Specification<T
         } else {
             throw new SQLException("Can't get generated id");
         }
-
     }
 
     @Override
