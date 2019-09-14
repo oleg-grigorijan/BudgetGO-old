@@ -8,7 +8,7 @@ import java.util.Objects;
 public final class Operation implements Identifiable {
     private final long id;
     private final Storage storage;
-    private final int moneyDelta;
+    private final long moneyDelta;
     private final LocalDate date;
     private final String description;
     private final LocalDate creationDate;
@@ -33,7 +33,7 @@ public final class Operation implements Identifiable {
         return storage;
     }
 
-    public int getMoneyDelta() {
+    public long getMoneyDelta() {
         return moneyDelta;
     }
 

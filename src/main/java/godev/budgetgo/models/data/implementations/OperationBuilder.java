@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class OperationBuilder implements DataBuilder<Operation> {
     private long id = -1;
     private Storage storage = new StorageBuilder().create();
-    private int moneyDelta = 0;
+    private long moneyDelta = 0;
     private LocalDate date = LocalDate.now();
     private String description = "";
     private LocalDate creationDate = LocalDate.now();
@@ -46,11 +46,11 @@ public class OperationBuilder implements DataBuilder<Operation> {
         return this;
     }
 
-    int getMoneyDelta() {
+    long getMoneyDelta() {
         return moneyDelta;
     }
 
-    public OperationBuilder setMoneyDelta(int moneyDelta) {
+    public OperationBuilder setMoneyDelta(long moneyDelta) {
         this.moneyDelta = moneyDelta;
         return this;
     }
