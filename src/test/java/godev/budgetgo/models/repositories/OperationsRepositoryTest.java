@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OperationsRepositoryTest {
-    private static OperationsRepository repository = new MySqlOperationsRepository();
+    private static OperationsRepository rep = new MySqlOperationsRepository();
     private static User userOleg;
     private static User userMaria;
     private static Storage storageA;
@@ -33,43 +33,40 @@ class OperationsRepositoryTest {
 
     @Test
     void operationAddTest() {
-        Operation operation = repository.add(
-                new OperationBuilder()
-                        .setStorage(storageA)
-                        .setMoneyDelta(-1000)
-                        .setCreator(userOleg)
-                        .create()
+        Operation operation = rep.add(new OperationBuilder()
+                .setStorage(storageA)
+                .setMoneyDelta(-1000)
+                .setCreator(userOleg)
+                .create()
         );
 
-        assertEquals(operation, repository.get(operation.getId()));
+        assertEquals(operation, rep.get(operation.getId()));
     }
 
     @Test
     void operationRemoveTest() {
-        Operation operation = repository.add(
-                new OperationBuilder()
-                        .setStorage(storageA)
-                        .setMoneyDelta(-1000)
-                        .setCreator(userOleg)
-                        .create()
+        Operation operation = rep.add(new OperationBuilder()
+                .setStorage(storageA)
+                .setMoneyDelta(-1000)
+                .setCreator(userOleg)
+                .create()
         );
-        repository.remove(operation);
+        rep.remove(operation);
 
-        assertNull(repository.get(operation.getId()));
+        assertNull(rep.get(operation.getId()));
     }
 
     @Test
     void operationUpdateTest() {
         LocalDate date = LocalDate.of(2019, 9, 14);
-        Operation operation = repository.add(
-                new OperationBuilder()
-                        .setStorage(storageA)
-                        .setMoneyDelta(-1000)
-                        .setCreator(userOleg)
-                        .setDescription("foo")
-                        .setDate(date)
-                        .setCreationDate(date)
-                        .create()
+        Operation operation = rep.add(new OperationBuilder()
+                .setStorage(storageA)
+                .setMoneyDelta(-1000)
+                .setCreator(userOleg)
+                .setDescription("foo")
+                .setDate(date)
+                .setCreationDate(date)
+                .create()
         );
 
         Operation updatedOperation = new OperationBuilder()
@@ -81,10 +78,10 @@ class OperationsRepositoryTest {
                 .setDate(date.plusDays(1))
                 .setCreationDate(date.plusDays(1))
                 .create();
-        repository.update(updatedOperation);
+        rep.update(updatedOperation);
 
-        assertNotEquals(operation, repository.get(operation.getId()));
-        assertEquals(updatedOperation, repository.get(operation.getId()));
+        assertNotEquals(operation, rep.get(operation.getId()));
+        assertEquals(updatedOperation, rep.get(operation.getId()));
     }
 
     @Test
@@ -98,60 +95,79 @@ class OperationsRepositoryTest {
                 .setMoneyDelta(-1000)
                 .setCreator(userOleg);
 
-        Operation operationFrom = repository.add(
-                builder.setDate(dateFrom).create()
-        );
-        Operation operationBetween = repository.add(
-                builder.setDate(dateBetween).create()
-        );
-        Operation operationTo = repository.add(
-                builder.setDate(dateTo).create()
-        );
-        Operation operationBefore = repository.add(
-                builder.setDate(dateFrom.minusDays(1)).create()
-        );
-        Operation operationAfter = repository.add(
-                builder.setDate(dateTo.plusDays(1)).create()
-        );
+        Operation[] operations = {
+                rep.add(builder.setDate(dateFrom).create()),
+                rep.add(builder.setDate(dateBetween).create()),
+                rep.add(builder.setDate(dateTo).create()),
+                rep.add(builder.setDate(dateFrom.minusDays(1)).create()),
+                rep.add(builder.setDate(dateTo.plusDays(1)).create()),
+        };
 
-        repository.removeAll(new OperationsSpecification()
+        OperationsSpecification spec = new OperationsSpecification()
                 .whereDateFrom(dateFrom)
-                .whereDateTo(dateTo)
-        );
+                .whereDateTo(dateTo);
 
-        assertNull(repository.get(operationFrom.getId()));
-        assertNull(repository.get(operationBetween.getId()));
-        assertNull(repository.get(operationTo.getId()));
-        assertNotNull(repository.get(operationBefore.getId()));
-        assertNotNull(repository.get(operationAfter.getId()));
+        rep.removeAll(spec);
+
+        for (Operation o : operations) {
+            if (spec.specified(o)) {
+                assertNull(rep.get(o.getId()));
+            } else {
+                assertNotNull(rep.get(o.getId()));
+            }
+        }
     }
 
     @Test
-    void operationsRemoveAllByStorageAndIdTest() {
-        Operation operationA = repository.add(
-                new OperationBuilder()
-                        .setStorage(storageA)
-                        .setMoneyDelta(-1000)
-                        .setCreator(userOleg)
-                        .create()
-        );
-        Operation operationB = repository.add(
-                new OperationBuilder()
-                        .setStorage(storageB)
-                        .setMoneyDelta(-1000)
-                        .setCreator(userOleg)
-                        .create()
-        );
-        repository.removeAll(new OperationsSpecification()
-                .whereStorage(storageA));
+    void operationsRemoveAllByStorageTest() {
+        OperationBuilder builder = new OperationBuilder().setCreator(userOleg);
 
-        assertNull(repository.get(operationA.getId()));
-        assertNotNull(repository.get(operationB.getId()));
+        Operation[] operations = {
+                rep.add(builder.setStorage(storageA).create()),
+                rep.add(builder.setStorage(storageB).create()),
+                rep.add(builder.setStorage(storageB).create()),
+                rep.add(builder.setStorage(storageA).create()),
+        };
 
-        repository.removeAll(new OperationsSpecification()
-                .whereId(operationB.getId()));
+        OperationsSpecification spec = new OperationsSpecification()
+                .whereStorage(storageA);
 
-        assertNull(repository.get(operationB.getId()));
+        rep.removeAll(spec);
+
+        for (Operation o : operations) {
+            if (spec.specified(o)) {
+                assertNull(rep.get(o.getId()));
+            } else {
+                assertNotNull(rep.get(o.getId()));
+            }
+        }
+    }
+
+    @Test
+    void operationsRemoveAllByIdTest() {
+        OperationBuilder builder = new OperationBuilder()
+                .setCreator(userOleg)
+                .setStorage(storageA);
+
+        Operation[] operations = {
+                rep.add(builder.create()),
+                rep.add(builder.create()),
+                rep.add(builder.create()),
+                rep.add(builder.create()),
+        };
+
+        OperationsSpecification spec = new OperationsSpecification()
+                .whereId(operations[2].getId());
+
+        rep.removeAll(spec);
+
+        for (Operation o : operations) {
+            if (spec.specified(o)) {
+                assertNull(rep.get(o.getId()));
+            } else {
+                assertNotNull(rep.get(o.getId()));
+            }
+        }
     }
 
     private static void clearTables() {
@@ -161,14 +177,13 @@ class OperationsRepositoryTest {
     }
 
     private static void initUsers() {
-        userOleg = Config.getUsersRepository().add(
-                new UserBuilder()
-                        .setEmail("oleg.grigorijan@gmail.com")
-                        .setName("Oleg")
-                        .setSurname("Grigorijan")
-                        .setPasswordHash("abcdef")
-                        .setPasswordSalt("123456")
-                        .create()
+        userOleg = Config.getUsersRepository().add(new UserBuilder()
+                .setEmail("oleg.grigorijan@gmail.com")
+                .setName("Oleg")
+                .setSurname("Grigorijan")
+                .setPasswordHash("abcdef")
+                .setPasswordSalt("123456")
+                .create()
         );
         userMaria = Config.getUsersRepository().add(new UserBuilder()
                 .setEmail("maria.golomako@gmail.com")
@@ -181,19 +196,17 @@ class OperationsRepositoryTest {
     }
 
     private static void initStorages() {
-        storageA = Config.getStoragesRepository().add(
-                new StorageBuilder()
-                        .setName("Visa")
-                        .addUser(userOleg)
-                        .addUser(userMaria)
-                        .create()
+        storageA = Config.getStoragesRepository().add(new StorageBuilder()
+                .setName("Visa")
+                .addUser(userOleg)
+                .addUser(userMaria)
+                .create()
         );
-        storageB = Config.getStoragesRepository().add(
-                new StorageBuilder()
-                        .setName("MasterCard")
-                        .addUser(userOleg)
-                        .addUser(userMaria)
-                        .create()
+        storageB = Config.getStoragesRepository().add(new StorageBuilder()
+                .setName("MasterCard")
+                .addUser(userOleg)
+                .addUser(userMaria)
+                .create()
         );
     }
 }

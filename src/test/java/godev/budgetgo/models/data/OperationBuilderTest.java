@@ -11,14 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class OperationBuilderTest {
 
     @Test
-    void operationSimpleCreation() {
+    void operationSimpleCreationTest() {
         int id = 1;
-        Storage storage = new StorageBuilder().setId(1).setName("My cash").create();
+        Storage storage = new StorageBuilder()
+                .setId(1)
+                .setName("My cash")
+                .create();
         int moneyDelta = -2000;
         LocalDate date = LocalDate.of(2019, 9, 9);
         String description = "My description";
         LocalDate creationDate = LocalDate.of(2019, 1, 9);
-        User creator = new UserBuilder().setId(1).create();
+        User creator = new UserBuilder()
+                .setId(1)
+                .create();
 
         Operation operation = new OperationBuilder()
                 .setId(id)
@@ -40,7 +45,7 @@ class OperationBuilderTest {
     }
 
     @Test
-    void operationDefaultCreation() {
+    void operationDefaultCreationTest() {
         Operation operation = new OperationBuilder().create();
 
         assertEquals(-1, operation.getId());
@@ -53,7 +58,7 @@ class OperationBuilderTest {
     }
 
     @Test
-    void operationCreationWithNulls() {
+    void operationCreationWithNullsTest() {
         OperationBuilder builder = new OperationBuilder();
 
         assertThrows(NullPointerException.class, () -> builder.setStorage(null));
@@ -64,14 +69,19 @@ class OperationBuilderTest {
     }
 
     @Test
-    void operationCreationFromAnother() {
+    void operationCreationFromAnotherTest() {
         int id = 1;
-        Storage storage = new StorageBuilder().setId(1).setName("My cash").create();
+        Storage storage = new StorageBuilder()
+                .setId(1)
+                .setName("My cash")
+                .create();
         int moneyDelta = -2000;
         LocalDate date = LocalDate.of(2019, 9, 9);
         String description = "My description";
         LocalDate creationDate = LocalDate.of(2019, 1, 9);
-        User creator = new UserBuilder().setId(1).create();
+        User creator = new UserBuilder()
+                .setId(1)
+                .create();
 
         Operation existingOperation = new OperationBuilder()
                 .setId(id)
@@ -83,7 +93,9 @@ class OperationBuilderTest {
                 .setCreator(creator)
                 .create();
 
-        Operation operation = new OperationBuilder().from(existingOperation).create();
+        Operation operation = new OperationBuilder()
+                .from(existingOperation)
+                .create();
 
         assertEquals(existingOperation, operation);
     }

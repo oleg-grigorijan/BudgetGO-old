@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class StorageBuilderTest {
 
     @Test
-    void storageSimpleCreation() {
+    void storageSimpleCreationTest() {
         int id = 1;
         String name = "My cash";
         UserBuilder userBuilder = new UserBuilder();
@@ -38,7 +38,7 @@ class StorageBuilderTest {
     }
 
     @Test
-    void storageDefaultCreation() {
+    void storageDefaultCreationTest() {
         Storage storage = new StorageBuilder().create();
 
         assertEquals(-1, storage.getId());
@@ -47,7 +47,7 @@ class StorageBuilderTest {
     }
 
     @Test
-    void storageCreationWithNulls() {
+    void storageCreationWithNullsTest() {
         StorageBuilder builder = new StorageBuilder();
 
         assertThrows(NullPointerException.class, () -> builder.setName(null));
@@ -55,7 +55,7 @@ class StorageBuilderTest {
     }
 
     @Test
-    void storageCreationFromAnother() {
+    void storageCreationFromAnotherTest() {
         int id = 1;
         String name = "My cash";
         UserBuilder userBuilder = new UserBuilder();

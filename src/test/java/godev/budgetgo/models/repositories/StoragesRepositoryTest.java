@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StoragesRepositoryTest {
-
-    private static StoragesRepository repository = Config.getStoragesRepository();
+    private static StoragesRepository rep = Config.getStoragesRepository();
     private static User userOleg;
     private static User userMaria;
 
@@ -28,64 +27,19 @@ class StoragesRepositoryTest {
 
     @Test
     void storageAddTest() {
-        Storage storage = repository.add(
+        Storage storage = rep.add(
                 new StorageBuilder()
                         .setName("MasterCard")
                         .addUser(userOleg)
                         .create()
         );
 
-        assertEquals(storage, repository.get(storage.getId()));
+        assertEquals(storage, rep.get(storage.getId()));
     }
 
     @Test
-    void storageRemoveTest() {
-        Storage storage = repository.add(
-                new StorageBuilder()
-                        .setName("MasterCard")
-                        .addUser(userOleg)
-                        .create()
-        );
-        repository.remove(storage);
-
-        assertNull(repository.get(storage.getId()));
-    }
-
-    @Test
-    void storageRemoveAll() {
-        Storage storageA = repository.add(
-                new StorageBuilder()
-                        .setName("A")
-                        .addUser(userOleg)
-                        .addUser(userMaria)
-                        .create()
-        );
-        Storage storageB = repository.add(
-                new StorageBuilder()
-                        .setName("B")
-                        .addUser(userOleg)
-                        .create()
-        );
-        Storage storageC = repository.add(
-                new StorageBuilder()
-                        .setName("C")
-                        .addUser(userMaria)
-                        .create()
-        );
-        repository.removeAll(new StoragesSpecification().whereUser(userOleg));
-
-        assertNull(repository.get(storageA.getId()));
-        assertNull(repository.get(storageB.getId()));
-        assertNotNull(repository.get(storageC.getId()));
-
-        repository.removeAll(new StoragesSpecification().whereId(storageC.getId()));
-
-        assertNull(repository.get(storageC.getId()));
-    }
-
-    @Test
-    void storageUpdate() {
-        Storage storage = repository.add(
+    void storageUpdateTest() {
+        Storage storage = rep.add(
                 new StorageBuilder()
                         .setName("MasterCard")
                         .addUser(userOleg)
@@ -93,17 +47,79 @@ class StoragesRepositoryTest {
         );
         Storage updatedStorage = new StorageBuilder()
                 .from(storage)
+                .setName("Visa")
                 .addUser(userMaria)
                 .create();
-        repository.update(updatedStorage);
+        rep.update(updatedStorage);
 
-        assertNotEquals(storage, repository.get(storage.getId()));
-        assertEquals(updatedStorage, repository.get(storage.getId()));
+        assertNotEquals(storage, rep.get(storage.getId()));
+        assertEquals(updatedStorage, rep.get(storage.getId()));
+    }
 
-        repository.update(storage);
+    @Test
+    void storageRemoveTest() {
+        Storage storage = rep.add(
+                new StorageBuilder()
+                        .setName("MasterCard")
+                        .addUser(userOleg)
+                        .create()
+        );
+        rep.remove(storage);
 
-        assertEquals(storage, repository.get(storage.getId()));
-        assertNotEquals(updatedStorage, repository.get(storage.getId()));
+        assertNull(rep.get(storage.getId()));
+    }
+
+    @Test
+    void storagesRemoveAllByIdTest() {
+        StorageBuilder builder = new StorageBuilder()
+                .setName("MasterCard")
+                .addUser(userOleg);
+
+        Storage[] storages = {
+                rep.add(builder.create()),
+                rep.add(builder.create()),
+                rep.add(builder.create()),
+                rep.add(builder.create()),
+        };
+
+        StoragesSpecification spec = new StoragesSpecification()
+                .whereId(storages[3].getId());
+
+        rep.removeAll(spec);
+
+        for (Storage s : storages) {
+            if (spec.specified(s)) {
+                assertNull(rep.get(s.getId()));
+            } else {
+                assertNotNull(rep.get(s.getId()));
+            }
+        }
+    }
+
+    @Test
+    void storagesRemoveAllByUserTest() {
+        StorageBuilder builder = new StorageBuilder()
+                .setName("MasterCard");
+
+        Storage[] storages = {
+                rep.add(builder.addUser(userOleg).addUser(userMaria).create()),
+                rep.add(builder.addUser(userOleg).create()),
+                rep.add(builder.addUser(userMaria).create()),
+                rep.add(builder.create()),
+        };
+
+        StoragesSpecification spec = new StoragesSpecification()
+                .whereUser(userOleg);
+
+        rep.removeAll(spec);
+
+        for (Storage s : storages) {
+            if (spec.specified(s)) {
+                assertNull(rep.get(s.getId()));
+            } else {
+                assertNotNull(rep.get(s.getId()));
+            }
+        }
     }
 
     static void clearTables() {
@@ -121,13 +137,14 @@ class StoragesRepositoryTest {
                         .setPasswordSalt("123456")
                         .create()
         );
-        userMaria = Config.getUsersRepository().add(new UserBuilder()
-                .setEmail("maria.golomako@gmail.com")
-                .setName("Maria")
-                .setSurname("Golomako")
-                .setPasswordHash("abcdef")
-                .setPasswordSalt("123456")
-                .create()
+        userMaria = Config.getUsersRepository().add(
+                new UserBuilder()
+                        .setEmail("maria.golomako@gmail.com")
+                        .setName("Maria")
+                        .setSurname("Golomako")
+                        .setPasswordHash("abcdef")
+                        .setPasswordSalt("123456")
+                        .create()
         );
     }
 }

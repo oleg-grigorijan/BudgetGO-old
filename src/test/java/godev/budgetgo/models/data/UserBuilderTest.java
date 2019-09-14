@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserBuilderTest {
 
     @Test
-    void userSimpleCreation() {
+    void userSimpleCreationTest() {
         int id = 1;
         String email = "oleg.grigorijan@gmail.com";
         String name = "Oleg";
@@ -37,7 +37,7 @@ class UserBuilderTest {
     }
 
     @Test
-    void userDefaultCreation() {
+    void userDefaultCreationTest() {
         User user = new UserBuilder().create();
 
         assertEquals(-1, user.getId());
@@ -49,7 +49,7 @@ class UserBuilderTest {
     }
 
     @Test
-    void userCreationWithNulls() {
+    void userCreationWithNullsTest() {
         UserBuilder builder = new UserBuilder();
 
         assertThrows(NullPointerException.class, () -> builder.setEmail(null));
@@ -60,7 +60,7 @@ class UserBuilderTest {
     }
 
     @Test
-    void userCreationFromAnother() {
+    void userCreationFromAnotherTest() {
         int id = 1;
         String email = "oleg.grigorijan@gmail.com";
         String name = "Oleg";
@@ -77,7 +77,9 @@ class UserBuilderTest {
                 .setPasswordSalt(passwordSalt)
                 .create();
 
-        User user = new UserBuilder().from(existingUser).create();
+        User user = new UserBuilder()
+                .from(existingUser)
+                .create();
 
         assertEquals(existingUser, user);
     }

@@ -12,53 +12,40 @@ class OperationsSpecificationTest {
     @Test
     void fullSpecificationTest() {
         long id = 1;
-        Storage storage = new StorageBuilder().setId(1).create();
+        Storage storage = new StorageBuilder()
+                .setId(1)
+                .create();
         LocalDate dateFrom = LocalDate.of(2019, 9, 10);
         LocalDate dateTo = LocalDate.of(2019, 9, 12);
 
-        Specification<Operation> specification = new OperationsSpecification()
+        Specification<Operation> spec = new OperationsSpecification()
                 .whereId(id)
                 .whereStorage(storage)
                 .whereDateFrom(dateFrom)
                 .whereDateTo(dateTo);
 
-        OperationBuilder operationBuilder = new OperationBuilder().setId(id).setStorage(storage);
+        OperationBuilder builder = new OperationBuilder().setId(id).setStorage(storage);
         Operation[] correctOperations = {
-                operationBuilder
-                        .setDate(dateFrom)
-                        .create(),
-                operationBuilder
-                        .setDate(dateTo)
-                        .create(),
-                operationBuilder
-                        .setDate(dateFrom.plusDays(1))
-                        .create()
+                builder.setDate(dateFrom).create(),
+                builder.setDate(dateTo).create(),
+                builder.setDate(dateFrom.plusDays(1)).create()
         };
+
         Operation[] incorrectOperations = {
-                operationBuilder
-                        .setId(id + 1)
-                        .create(),
-                operationBuilder
-                        .setId(id)
-                        .setStorage(new StorageBuilder().create())
-                        .create(),
-                operationBuilder
-                        .setStorage(storage)
-                        .setDate(dateFrom.minusDays(1))
-                        .create(),
-                operationBuilder
-                        .setDate(dateTo.plusDays(1))
-                        .create(),
+                builder.setId(id + 1).create(),
+                builder.setId(id).setStorage(new StorageBuilder().create()).create(),
+                builder.setStorage(storage).setDate(dateFrom.minusDays(1)).create(),
+                builder.setDate(dateTo.plusDays(1)).create(),
                 new OperationBuilder().create()
         };
 
-        for (Operation o : correctOperations) assertTrue(specification.specified(o));
-        for (Operation o : incorrectOperations) assertFalse(specification.specified(o));
+        for (Operation o : correctOperations) assertTrue(spec.specified(o));
+        for (Operation o : incorrectOperations) assertFalse(spec.specified(o));
     }
 
     @Test
     void emptySpecificationTest() {
-        Specification<Operation> specification = new OperationsSpecification();
+        Specification<Operation> spec = new OperationsSpecification();
 
         Operation[] operations = {
                 new OperationBuilder()
@@ -70,7 +57,7 @@ class OperationsSpecificationTest {
                         .create()
         };
 
-        for (Operation o : operations) assertTrue(specification.specified(o));
+        for (Operation o : operations) assertTrue(spec.specified(o));
     }
 
 }

@@ -16,7 +16,6 @@ class UsersSpecificationTest {
                 .whereId(id)
                 .whereEmail(email);
 
-
         User correctUser = new UserBuilder().setId(id).setEmail(email).setName("SomeName").create();
         User[] incorrectUsers = {
                 new UserBuilder().setId(id + 1).setEmail(email).create(),
