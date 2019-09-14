@@ -1,9 +1,6 @@
 package godev.budgetgo.models.data;
 
-import godev.budgetgo.models.data.implementations.Operation;
-import godev.budgetgo.models.data.implementations.OperationBuilder;
-import godev.budgetgo.models.data.implementations.Storage;
-import godev.budgetgo.models.data.implementations.StorageBuilder;
+import godev.budgetgo.models.data.implementations.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -21,6 +18,7 @@ class OperationBuilderTest {
         LocalDate date = LocalDate.of(2019, 9, 9);
         String description = "My description";
         LocalDate creationDate = LocalDate.of(2019, 1, 9);
+        User creator = new UserBuilder().setId(1).create();
 
         Operation operation = new OperationBuilder()
                 .setId(id)
@@ -29,6 +27,7 @@ class OperationBuilderTest {
                 .setDate(date)
                 .setDescription(description)
                 .setCreationDate(creationDate)
+                .setCreator(creator)
                 .create();
 
         assertEquals(id, operation.getId());
@@ -37,6 +36,7 @@ class OperationBuilderTest {
         assertEquals(date, operation.getDate());
         assertEquals(description, operation.getDescription());
         assertEquals(creationDate, operation.getCreationDate());
+        assertEquals(creator, operation.getCreator());
     }
 
     @Test
@@ -49,6 +49,7 @@ class OperationBuilderTest {
         assertEquals(LocalDate.now(), operation.getDate());
         assertEquals("", operation.getDescription());
         assertEquals(LocalDate.now(), operation.getCreationDate());
+        assertEquals(new UserBuilder().create(), operation.getCreator());
     }
 
     @Test
@@ -59,6 +60,7 @@ class OperationBuilderTest {
         assertThrows(NullPointerException.class, () -> builder.setDate(null));
         assertThrows(NullPointerException.class, () -> builder.setDescription(null));
         assertThrows(NullPointerException.class, () -> builder.setCreationDate(null));
+        assertThrows(NullPointerException.class, () -> builder.setCreator(null));
     }
 
     @Test
@@ -69,6 +71,7 @@ class OperationBuilderTest {
         LocalDate date = LocalDate.of(2019, 9, 9);
         String description = "My description";
         LocalDate creationDate = LocalDate.of(2019, 1, 9);
+        User creator = new UserBuilder().setId(1).create();
 
         Operation existingOperation = new OperationBuilder()
                 .setId(id)
@@ -77,6 +80,7 @@ class OperationBuilderTest {
                 .setDate(date)
                 .setDescription(description)
                 .setCreationDate(creationDate)
+                .setCreator(creator)
                 .create();
 
         Operation operation = new OperationBuilder().from(existingOperation).create();

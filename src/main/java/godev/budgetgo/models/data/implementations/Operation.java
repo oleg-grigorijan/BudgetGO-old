@@ -12,6 +12,7 @@ public final class Operation implements Identifiable {
     private final LocalDate date;
     private final String description;
     private final LocalDate creationDate;
+    private final User creator;
 
     Operation(OperationBuilder builder) {
         id = builder.getId();
@@ -20,6 +21,7 @@ public final class Operation implements Identifiable {
         date = builder.getDate();
         description = builder.getDescription();
         creationDate = builder.getCreationDate();
+        creator = builder.getCreator();
     }
 
     @Override
@@ -47,6 +49,10 @@ public final class Operation implements Identifiable {
         return creationDate;
     }
 
+    public User getCreator() {
+        return creator;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,11 +63,12 @@ public final class Operation implements Identifiable {
                 storage.equals(operation.storage) &&
                 date.equals(operation.date) &&
                 description.equals(operation.description) &&
-                creationDate.equals(operation.creationDate);
+                creationDate.equals(operation.creationDate) &&
+                creator.equals(operation.creator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, storage, moneyDelta, date, description, creationDate);
+        return Objects.hash(id, storage, moneyDelta, date, description, creationDate, creator);
     }
 }

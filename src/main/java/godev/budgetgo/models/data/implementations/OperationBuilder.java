@@ -12,6 +12,7 @@ public class OperationBuilder implements DataBuilder<Operation> {
     private LocalDate date = LocalDate.now();
     private String description = "";
     private LocalDate creationDate = LocalDate.now();
+    private User creator = new UserBuilder().create();
 
     @Override
     public OperationBuilder from(Operation entity) {
@@ -21,6 +22,7 @@ public class OperationBuilder implements DataBuilder<Operation> {
         date = entity.getDate();
         description = entity.getDescription();
         creationDate = entity.getCreationDate();
+        creator = entity.getCreator();
         return this;
     }
 
@@ -80,6 +82,16 @@ public class OperationBuilder implements DataBuilder<Operation> {
     public OperationBuilder setCreationDate(LocalDate creationDate) {
         if (creationDate == null) throw new NullPointerException();
         this.creationDate = creationDate;
+        return this;
+    }
+
+    User getCreator() {
+        return creator;
+    }
+
+    public OperationBuilder setCreator(User creator) {
+        if (creator == null) throw new NullPointerException();
+        this.creator = creator;
         return this;
     }
 
