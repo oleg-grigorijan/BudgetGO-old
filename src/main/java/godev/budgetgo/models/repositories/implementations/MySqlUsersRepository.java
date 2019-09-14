@@ -10,13 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MySqlUsersRepository extends MySqlRepository<User, UsersSpecification, UserConditionsFactory> implements UsersRepository {
-    static {
-        tableName = "users";
-    }
-
+public class MySqlUsersRepository extends MySqlRepository<User, UsersSpecification, UsersConditionsFactory> implements UsersRepository {
     public MySqlUsersRepository() {
-        conditionsFactory = new UserConditionsFactory();
+        conditionsFactory = new UsersConditionsFactory();
+        tableName = "users";
     }
 
     @Override

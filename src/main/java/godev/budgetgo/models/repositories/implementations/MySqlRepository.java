@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 abstract class MySqlRepository<T extends Identifiable, S extends Specification<T>, C extends ConditionsFactory<S>> implements Repository<T, S> {
     C conditionsFactory;
-    static String tableName;
+    String tableName;
     final ConnectionFactory connectionFactory = Config.getConnectionFactory();
     List<Consumer<T>> subscribersOnAdd = new ArrayList<>();
     private List<Consumer<T>> subscribersOnRemove = new ArrayList<>();
