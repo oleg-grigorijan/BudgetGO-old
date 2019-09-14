@@ -14,7 +14,7 @@ public class StorageBuilder implements DataBuilder<Storage> {
     public StorageBuilder from(Storage entity) {
         id = entity.getId();
         name = entity.getName();
-        users = entity.getUsers();
+        users.addAll(entity.getUsers());
         return this;
     }
 
