@@ -54,11 +54,13 @@ public final class User implements Identifiable {
         return id == user.id &&
                 email.equals(user.email) &&
                 name.equals(user.name) &&
-                surname.equals(user.surname);
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, name, surname);
+                surname.equals(user.surname) &&
+                passwordHash.equals(user.passwordHash) &&
+                passwordSalt.equals(user.passwordSalt);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, name, surname, passwordHash, passwordSalt);
+    }
 }
