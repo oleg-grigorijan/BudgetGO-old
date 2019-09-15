@@ -9,6 +9,10 @@ public class UserBuilder implements DataBuilder<User> {
     private String surname = "";
     private String passwordHash = "";
     private String passwordSalt = "";
+    private static User removedUser = new UserBuilder()
+            .setId(0)
+            .setName("deleted user")
+            .create();
 
     @Override
     public UserBuilder from(User entity) {
@@ -84,5 +88,9 @@ public class UserBuilder implements DataBuilder<User> {
         if (passwordSalt == null) throw new NullPointerException();
         this.passwordSalt = passwordSalt;
         return this;
+    }
+
+    public static User getRemovedUser() {
+        return removedUser;
     }
 }

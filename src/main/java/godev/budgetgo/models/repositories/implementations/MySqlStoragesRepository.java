@@ -1,10 +1,7 @@
 package godev.budgetgo.models.repositories.implementations;
 
 import godev.budgetgo.models.Config;
-import godev.budgetgo.models.data.implementations.Storage;
-import godev.budgetgo.models.data.implementations.StorageBuilder;
-import godev.budgetgo.models.data.implementations.StoragesSpecification;
-import godev.budgetgo.models.data.implementations.User;
+import godev.budgetgo.models.data.implementations.*;
 import godev.budgetgo.models.repositories.StoragesRepository;
 
 import java.sql.Connection;
@@ -21,12 +18,15 @@ public class MySqlStoragesRepository extends MySqlRepository<Storage, StoragesSp
 
     @Override
     protected Storage extract(ResultSet resultSet) throws SQLException {
+        long creatorId = resultSet.getLong("creator_id");
+        User creator = creatorId == 0 ?
+                UserBuilder.getRemovedUser() : Config.getUsersRepository().get(creatorId);
+
         long entityId = resultSet.getLong("id");
         StorageBuilder builder = new StorageBuilder()
                 .setId(entityId)
                 .setName(resultSet.getString("name"))
-                .setCreator(Config.getUsersRepository()
-                        .get(resultSet.getLong("creator_id")));
+                .setCreator(creator);
 
         try (Connection connection = connectionFactory.createConnection();
              PreparedStatement statement = connection.prepareStatement(

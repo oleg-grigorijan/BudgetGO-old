@@ -1,9 +1,7 @@
 package godev.budgetgo.models.repositories.implementations;
 
 import godev.budgetgo.models.Config;
-import godev.budgetgo.models.data.implementations.Operation;
-import godev.budgetgo.models.data.implementations.OperationBuilder;
-import godev.budgetgo.models.data.implementations.OperationsSpecification;
+import godev.budgetgo.models.data.implementations.*;
 import godev.budgetgo.models.repositories.OperationsRepository;
 
 import java.sql.*;
@@ -16,6 +14,10 @@ public class MySqlOperationsRepository extends MySqlRepository<Operation, Operat
 
     @Override
     protected Operation extract(ResultSet resultSet) throws SQLException {
+        long creatorId = resultSet.getLong("creator_id");
+        User creator = creatorId == 0 ?
+                UserBuilder.getRemovedUser() : Config.getUsersRepository().get(creatorId);
+
         return new OperationBuilder()
                 .setId(resultSet.getLong("id"))
                 .setStorage(Config.getStoragesRepository().get(resultSet.getLong("storage_id")))
@@ -23,7 +25,7 @@ public class MySqlOperationsRepository extends MySqlRepository<Operation, Operat
                 .setDate(resultSet.getDate("date").toLocalDate())
                 .setDescription(resultSet.getString("description"))
                 .setCreationDate(resultSet.getDate("creation_date").toLocalDate())
-                .setCreator(Config.getUsersRepository().get(resultSet.getLong("creator_id")))
+                .setCreator(creator)
                 .create();
     }
 
