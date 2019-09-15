@@ -31,6 +31,7 @@ class StoragesRepositoryTest {
                 new StorageBuilder()
                         .setName("MasterCard")
                         .addUser(userOleg)
+                        .setCreator(userOleg)
                         .create()
         );
 
@@ -43,6 +44,7 @@ class StoragesRepositoryTest {
                 new StorageBuilder()
                         .setName("MasterCard")
                         .addUser(userOleg)
+                        .setCreator(userOleg)
                         .create()
         );
         Storage updatedStorage = new StorageBuilder()
@@ -62,6 +64,7 @@ class StoragesRepositoryTest {
                 new StorageBuilder()
                         .setName("MasterCard")
                         .addUser(userOleg)
+                        .setCreator(userOleg)
                         .create()
         );
         rep.remove(storage);
@@ -73,7 +76,8 @@ class StoragesRepositoryTest {
     void storagesRemoveAllByIdTest() {
         StorageBuilder builder = new StorageBuilder()
                 .setName("MasterCard")
-                .addUser(userOleg);
+                .addUser(userOleg)
+                .setCreator(userOleg);
 
         Storage[] storages = {
                 rep.add(builder.create()),
@@ -99,7 +103,8 @@ class StoragesRepositoryTest {
     @Test
     void storagesRemoveAllByUserTest() {
         StorageBuilder builder = new StorageBuilder()
-                .setName("MasterCard");
+                .setName("MasterCard")
+                .setCreator(userOleg);
 
         Storage[] storages = {
                 rep.add(builder.addUser(userOleg).addUser(userMaria).create()),
@@ -123,8 +128,8 @@ class StoragesRepositoryTest {
     }
 
     static void clearTables() {
-        Config.getUsersRepository().removeAll(new UsersSpecification());
         Config.getStoragesRepository().removeAll(new StoragesSpecification());
+        Config.getUsersRepository().removeAll(new UsersSpecification());
     }
 
     static void initUsers() {

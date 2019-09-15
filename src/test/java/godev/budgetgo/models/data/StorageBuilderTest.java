@@ -30,11 +30,13 @@ class StorageBuilderTest {
                 .addUser(users[0])
                 .addUser(users[1])
                 .addUser(users[2])
+                .setCreator(users[0])
                 .create();
 
         assertEquals(id, storage.getId());
         assertEquals(name, storage.getName());
         assertEquals(new HashSet<>(Arrays.asList(users)), storage.getUsers());
+        assertEquals(users[0], storage.getCreator());
     }
 
     @Test
@@ -44,6 +46,7 @@ class StorageBuilderTest {
         assertEquals(-1, storage.getId());
         assertEquals("", storage.getName());
         assertTrue(storage.getUsers().isEmpty());
+        assertEquals(new UserBuilder().create(), storage.getCreator());
     }
 
     @Test
@@ -52,6 +55,7 @@ class StorageBuilderTest {
 
         assertThrows(NullPointerException.class, () -> builder.setName(null));
         assertThrows(NullPointerException.class, () -> builder.addUser(null));
+        assertThrows(NullPointerException.class, () -> builder.setCreator(null));
     }
 
     @Test
@@ -71,6 +75,7 @@ class StorageBuilderTest {
                 .addUser(users[0])
                 .addUser(users[1])
                 .addUser(users[2])
+                .setCreator(users[0])
                 .create();
 
         Storage storage = new StorageBuilder().from(existingStorage).create();

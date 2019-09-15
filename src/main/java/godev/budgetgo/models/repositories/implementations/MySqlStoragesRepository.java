@@ -24,7 +24,9 @@ public class MySqlStoragesRepository extends MySqlRepository<Storage, StoragesSp
         long entityId = resultSet.getLong("id");
         StorageBuilder builder = new StorageBuilder()
                 .setId(entityId)
-                .setName(resultSet.getString("name"));
+                .setName(resultSet.getString("name"))
+                .setCreator(Config.getUsersRepository()
+                        .get(resultSet.getLong("creator_id")));
 
         try (Connection connection = connectionFactory.createConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -49,10 +51,11 @@ public class MySqlStoragesRepository extends MySqlRepository<Storage, StoragesSp
         try (Connection connection = connectionFactory.createConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT " +
-                             "INTO storages (name) " +
-                             "VALUE (?)", PreparedStatement.RETURN_GENERATED_KEYS)
+                             "INTO storages (name, creator_id) " +
+                             "VALUE (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, entity.getName());
+            statement.setLong(2, entity.getCreator().getId());
             statement.executeUpdate();
             long storageId = getGeneratedId(statement);
 
@@ -83,11 +86,12 @@ public class MySqlStoragesRepository extends MySqlRepository<Storage, StoragesSp
         try (Connection connection = connectionFactory.createConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE storages " +
-                             "SET name = ? " +
+                             "SET name = ?, creator_id = ? " +
                              "WHERE id = ?")
         ) {
             statement.setString(1, updatedEntity.getName());
-            statement.setLong(2, oldEntity.getId());
+            statement.setLong(2, updatedEntity.getCreator().getId());
+            statement.setLong(3, oldEntity.getId());
             statement.executeUpdate();
 
             Set<User> oldUsers = oldEntity.getUsers();

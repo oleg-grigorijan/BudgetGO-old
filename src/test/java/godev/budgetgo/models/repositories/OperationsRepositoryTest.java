@@ -200,12 +200,14 @@ class OperationsRepositoryTest {
                 .setName("Visa")
                 .addUser(userOleg)
                 .addUser(userMaria)
+                .setCreator(userOleg)
                 .create()
         );
         storageB = Config.getStoragesRepository().add(new StorageBuilder()
                 .setName("MasterCard")
                 .addUser(userOleg)
                 .addUser(userMaria)
+                .setCreator(userOleg)
                 .create()
         );
     }

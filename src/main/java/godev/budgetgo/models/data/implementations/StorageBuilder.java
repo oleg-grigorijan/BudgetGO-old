@@ -9,12 +9,14 @@ public class StorageBuilder implements DataBuilder<Storage> {
     private long id = -1;
     private String name = "";
     private Set<User> users = new HashSet<>();
+    private User creator = new UserBuilder().create();
 
     @Override
     public StorageBuilder from(Storage entity) {
         id = entity.getId();
         name = entity.getName();
         users.addAll(entity.getUsers());
+        creator = entity.getCreator();
         return this;
     }
 
@@ -45,6 +47,16 @@ public class StorageBuilder implements DataBuilder<Storage> {
     public StorageBuilder addUser(User user) {
         if (user == null) throw new NullPointerException();
         users.add(user);
+        return this;
+    }
+
+    User getCreator() {
+        return creator;
+    }
+
+    public StorageBuilder setCreator(User creator) {
+        if (creator == null) throw new NullPointerException();
+        this.creator = creator;
         return this;
     }
 

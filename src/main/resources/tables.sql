@@ -1,22 +1,26 @@
-create table if not exists storages
-(
-    id   int auto_increment
-        primary key,
-    name varchar(40) not null
-)
-    charset = utf8mb4;
-
 create table if not exists users
 (
     id            int auto_increment
         primary key,
     email         varchar(255) not null,
-    name          varchar(40)  null,
-    surname       varchar(40)  null,
+    name          varchar(40)  not null,
+    surname       varchar(40)  not null,
     password_hash varchar(255) not null,
     password_salt varchar(255) not null,
     constraint users_login_uindex
         unique (email)
+)
+    charset = utf8mb4;
+
+create table if not exists storages
+(
+    id         int auto_increment
+        primary key,
+    name       varchar(40) not null,
+    creator_id int         null,
+    constraint storages_users_id_fk
+        foreign key (creator_id) references users (id)
+            on delete set null
 )
     charset = utf8mb4;
 
@@ -27,14 +31,15 @@ create table if not exists operations
     storage_id    int         not null,
     money_delta   int         not null,
     date          date        not null,
-    description   varchar(80) null,
+    description   varchar(80) not null,
     creation_date date        not null,
-    creator_id    int         not null,
+    creator_id    int         null,
     constraint operations_storages_id_fk
         foreign key (storage_id) references storages (id)
             on update cascade on delete cascade,
     constraint operations_users_id_fk
         foreign key (creator_id) references users (id)
+            on delete set null
 )
     charset = utf8mb4;
 

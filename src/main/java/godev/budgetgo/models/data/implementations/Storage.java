@@ -10,11 +10,13 @@ public final class Storage implements Identifiable {
     private final long id;
     private final String name;
     private final Set<User> users;
+    private final User creator;
 
     Storage(StorageBuilder builder) {
         id = builder.getId();
         name = builder.getName();
         users = Collections.unmodifiableSet(builder.getUsers());
+        creator = builder.getCreator();
     }
 
     @Override
@@ -30,6 +32,10 @@ public final class Storage implements Identifiable {
         return users;
     }
 
+    public User getCreator() {
+        return creator;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,11 +43,13 @@ public final class Storage implements Identifiable {
         Storage storage = (Storage) o;
         return id == storage.id &&
                 name.equals(storage.name) &&
-                users.equals(storage.users);
+                users.equals(storage.users) &&
+                creator.equals(storage.creator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, users);
+        return Objects.hash(id, name, users, creator);
     }
+
 }

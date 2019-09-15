@@ -158,6 +158,7 @@ class UserRepositoryTest {
                         .setName("Card")
                         .addUser(users[1])
                         .addUser(users[2])
+                        .setCreator(users[1])
                         .create());
 
         UsersSpecification spec = new UsersSpecification()
