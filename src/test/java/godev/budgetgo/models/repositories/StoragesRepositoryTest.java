@@ -1,7 +1,8 @@
 package godev.budgetgo.models.repositories;
 
-import godev.budgetgo.models.Config;
 import godev.budgetgo.models.data.implementations.*;
+import godev.budgetgo.models.dbfactory.RepositoriesFactory;
+import godev.budgetgo.models.dbfactory.implementations.MySqlDbFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,25 +10,28 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StoragesRepositoryTest {
-    private static StoragesRepository rep = Config.getStoragesRepository();
+    private static StoragesRepository storagesRep;
+    private static UsersRepository usersRep;
     private static User userOleg;
     private static User userMaria;
 
     @BeforeAll
     static void init() {
-        Config.runTestMode();
+        RepositoriesFactory repositoriesFactory = new MySqlDbFactory();
+        storagesRep = repositoriesFactory.getStoragesRepository();
+        usersRep = repositoriesFactory.getUsersRepository();
         clearTables();
         initUsers();
     }
 
     @AfterEach
     void clearStoragesTable() {
-        Config.getStoragesRepository().removeAll(new StoragesSpecification());
+        storagesRep.removeAll(new StoragesSpecification());
     }
 
     @Test
     void storageAddTest() {
-        Storage storage = rep.add(
+        Storage storage = storagesRep.add(
                 new StorageBuilder()
                         .setName("MasterCard")
                         .addUser(userOleg)
@@ -35,12 +39,12 @@ class StoragesRepositoryTest {
                         .create()
         );
 
-        assertEquals(storage, rep.get(storage.getId()));
+        assertEquals(storage, storagesRep.get(storage.getId()));
     }
 
     @Test
     void storageUpdateTest() {
-        Storage storage = rep.add(
+        Storage storage = storagesRep.add(
                 new StorageBuilder()
                         .setName("MasterCard")
                         .addUser(userOleg)
@@ -52,24 +56,24 @@ class StoragesRepositoryTest {
                 .setName("Visa")
                 .addUser(userMaria)
                 .create();
-        rep.update(updatedStorage);
+        storagesRep.update(updatedStorage);
 
-        assertNotEquals(storage, rep.get(storage.getId()));
-        assertEquals(updatedStorage, rep.get(storage.getId()));
+        assertNotEquals(storage, storagesRep.get(storage.getId()));
+        assertEquals(updatedStorage, storagesRep.get(storage.getId()));
     }
 
     @Test
     void storageRemoveTest() {
-        Storage storage = rep.add(
+        Storage storage = storagesRep.add(
                 new StorageBuilder()
                         .setName("MasterCard")
                         .addUser(userOleg)
                         .setCreator(userOleg)
                         .create()
         );
-        rep.remove(storage);
+        storagesRep.remove(storage);
 
-        assertNull(rep.get(storage.getId()));
+        assertNull(storagesRep.get(storage.getId()));
     }
 
     @Test
@@ -80,22 +84,22 @@ class StoragesRepositoryTest {
                 .setCreator(userOleg);
 
         Storage[] storages = {
-                rep.add(builder.create()),
-                rep.add(builder.create()),
-                rep.add(builder.create()),
-                rep.add(builder.create()),
+                storagesRep.add(builder.create()),
+                storagesRep.add(builder.create()),
+                storagesRep.add(builder.create()),
+                storagesRep.add(builder.create()),
         };
 
         StoragesSpecification spec = new StoragesSpecification()
                 .whereId(storages[3].getId());
 
-        rep.removeAll(spec);
+        storagesRep.removeAll(spec);
 
         for (Storage s : storages) {
             if (spec.specified(s)) {
-                assertNull(rep.get(s.getId()));
+                assertNull(storagesRep.get(s.getId()));
             } else {
-                assertNotNull(rep.get(s.getId()));
+                assertNotNull(storagesRep.get(s.getId()));
             }
         }
     }
@@ -107,33 +111,33 @@ class StoragesRepositoryTest {
                 .setCreator(userOleg);
 
         Storage[] storages = {
-                rep.add(builder.addUser(userOleg).addUser(userMaria).create()),
-                rep.add(builder.addUser(userOleg).create()),
-                rep.add(builder.addUser(userMaria).create()),
-                rep.add(builder.create()),
+                storagesRep.add(builder.addUser(userOleg).addUser(userMaria).create()),
+                storagesRep.add(builder.addUser(userOleg).create()),
+                storagesRep.add(builder.addUser(userMaria).create()),
+                storagesRep.add(builder.create()),
         };
 
         StoragesSpecification spec = new StoragesSpecification()
                 .whereUser(userOleg);
 
-        rep.removeAll(spec);
+        storagesRep.removeAll(spec);
 
         for (Storage s : storages) {
             if (spec.specified(s)) {
-                assertNull(rep.get(s.getId()));
+                assertNull(storagesRep.get(s.getId()));
             } else {
-                assertNotNull(rep.get(s.getId()));
+                assertNotNull(storagesRep.get(s.getId()));
             }
         }
     }
 
     static void clearTables() {
-        Config.getStoragesRepository().removeAll(new StoragesSpecification());
-        Config.getUsersRepository().removeAll(new UsersSpecification());
+        storagesRep.removeAll(new StoragesSpecification());
+        usersRep.removeAll(new UsersSpecification());
     }
 
     static void initUsers() {
-        userOleg = Config.getUsersRepository().add(
+        userOleg = usersRep.add(
                 new UserBuilder()
                         .setEmail("oleg.grigorijan@gmail.com")
                         .setName("Oleg")
@@ -142,7 +146,7 @@ class StoragesRepositoryTest {
                         .setPasswordSalt("123456")
                         .create()
         );
-        userMaria = Config.getUsersRepository().add(
+        userMaria = usersRep.add(
                 new UserBuilder()
                         .setEmail("maria.golomako@gmail.com")
                         .setName("Maria")

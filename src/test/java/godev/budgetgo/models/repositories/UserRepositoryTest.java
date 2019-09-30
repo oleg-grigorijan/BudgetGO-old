@@ -1,7 +1,8 @@
 package godev.budgetgo.models.repositories;
 
-import godev.budgetgo.models.Config;
 import godev.budgetgo.models.data.implementations.*;
+import godev.budgetgo.models.dbfactory.RepositoriesFactory;
+import godev.budgetgo.models.dbfactory.implementations.MySqlDbFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,22 +10,25 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserRepositoryTest {
-    private static UsersRepository rep = Config.getUsersRepository();
+    private static UsersRepository usersRep;
+    private static StoragesRepository storagesRep;
 
     @BeforeAll
-    static void setTestMode() {
-        Config.runTestMode();
+    static void init() {
+        RepositoriesFactory repositoriesFactory = new MySqlDbFactory();
+        usersRep = repositoriesFactory.getUsersRepository();
+        storagesRep = repositoriesFactory.getStoragesRepository();
         clearTables();
     }
 
     @AfterEach
     void clearUsersTable() {
-        Config.getUsersRepository().removeAll(new UsersSpecification());
+        usersRep.removeAll(new UsersSpecification());
     }
 
     @Test
     void userAddTest() {
-        User user = rep.add(
+        User user = usersRep.add(
                 new UserBuilder()
                         .setEmail("oleg.grigorijan@gmail.com")
                         .setName("Oleg")
@@ -34,12 +38,12 @@ class UserRepositoryTest {
                         .create()
         );
 
-        assertEquals(user, rep.get(user.getId()));
+        assertEquals(user, usersRep.get(user.getId()));
     }
 
     @Test
     void userUpdateTest() {
-        User user = rep.add(
+        User user = usersRep.add(
                 new UserBuilder()
                         .setEmail("oleg.grigorijan@gmail.com")
                         .setName("Oleg")
@@ -58,14 +62,14 @@ class UserRepositoryTest {
                 .setPasswordSalt("123456")
                 .create();
 
-        rep.update(updatedUser);
+        usersRep.update(updatedUser);
 
-        assertEquals(updatedUser, rep.get(user.getId()));
+        assertEquals(updatedUser, usersRep.get(user.getId()));
     }
 
     @Test
     void userRemoveTest() {
-        User user = rep.add(
+        User user = usersRep.add(
                 new UserBuilder()
                         .setEmail("oleg.grigorijan@gmail.com")
                         .setName("Oleg")
@@ -74,9 +78,9 @@ class UserRepositoryTest {
                         .setPasswordSalt("123456")
                         .create()
         );
-        rep.remove(user);
+        usersRep.remove(user);
 
-        assertNull(rep.get(user.getId()));
+        assertNull(usersRep.get(user.getId()));
     }
 
     @Test
@@ -88,22 +92,22 @@ class UserRepositoryTest {
                 .setPasswordSalt("123456");
 
         User[] users = {
-                rep.add(builder.setEmail("example1@example.com").create()),
-                rep.add(builder.setEmail("example2@example.com").create()),
-                rep.add(builder.setEmail("example3@example.com").create()),
-                rep.add(builder.setEmail("example4@example.com").create()),
+                usersRep.add(builder.setEmail("example1@example.com").create()),
+                usersRep.add(builder.setEmail("example2@example.com").create()),
+                usersRep.add(builder.setEmail("example3@example.com").create()),
+                usersRep.add(builder.setEmail("example4@example.com").create()),
         };
 
         UsersSpecification spec = new UsersSpecification()
                 .whereId(users[2].getId());
 
-        rep.removeAll(spec);
+        usersRep.removeAll(spec);
 
         for (User u : users) {
             if (spec.specified(u)) {
-                assertNull(rep.get(u.getId()));
+                assertNull(usersRep.get(u.getId()));
             } else {
-                assertNotNull(rep.get(u.getId()));
+                assertNotNull(usersRep.get(u.getId()));
             }
         }
     }
@@ -118,22 +122,22 @@ class UserRepositoryTest {
         String email = "oleg.grigorijan@gmail.com";
 
         User[] users = {
-                rep.add(builder.setEmail("example1@example.com").create()),
-                rep.add(builder.setEmail(email).create()),
-                rep.add(builder.setEmail("example2@example.com").create()),
-                rep.add(builder.setEmail("example3@example.com").create()),
+                usersRep.add(builder.setEmail("example1@example.com").create()),
+                usersRep.add(builder.setEmail(email).create()),
+                usersRep.add(builder.setEmail("example2@example.com").create()),
+                usersRep.add(builder.setEmail("example3@example.com").create()),
         };
 
         UsersSpecification spec = new UsersSpecification()
                 .whereEmail(email);
 
-        rep.removeAll(spec);
+        usersRep.removeAll(spec);
 
         for (User u : users) {
             if (spec.specified(u)) {
-                assertNull(rep.get(u.getId()));
+                assertNull(usersRep.get(u.getId()));
             } else {
-                assertNotNull(rep.get(u.getId()));
+                assertNotNull(usersRep.get(u.getId()));
             }
         }
     }
@@ -147,13 +151,13 @@ class UserRepositoryTest {
                 .setPasswordSalt("123456");
 
         User[] users = {
-                rep.add(builder.setEmail("example1@example.com").create()),
-                rep.add(builder.setEmail("example2@example.com").create()),
-                rep.add(builder.setEmail("example3@example.com").create()),
-                rep.add(builder.setEmail("example4@example.com").create()),
+                usersRep.add(builder.setEmail("example1@example.com").create()),
+                usersRep.add(builder.setEmail("example2@example.com").create()),
+                usersRep.add(builder.setEmail("example3@example.com").create()),
+                usersRep.add(builder.setEmail("example4@example.com").create()),
         };
 
-        Storage storage = Config.getStoragesRepository().add(
+        Storage storage = storagesRep.add(
                 new StorageBuilder()
                         .setName("Card")
                         .addUser(users[1])
@@ -164,19 +168,19 @@ class UserRepositoryTest {
         UsersSpecification spec = new UsersSpecification()
                 .withStorageAccess(storage);
 
-        rep.removeAll(spec);
+        usersRep.removeAll(spec);
 
         for (User u : users) {
             if (spec.specified(u)) {
-                assertNull(rep.get(u.getId()));
+                assertNull(usersRep.get(u.getId()));
             } else {
-                assertNotNull(rep.get(u.getId()));
+                assertNotNull(usersRep.get(u.getId()));
             }
         }
     }
 
     private static void clearTables() {
-        Config.getStoragesRepository().removeAll(new StoragesSpecification());
-        Config.getUsersRepository().removeAll(new UsersSpecification());
+        storagesRep.removeAll(new StoragesSpecification());
+        usersRep.removeAll(new UsersSpecification());
     }
 }

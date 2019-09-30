@@ -1,8 +1,9 @@
 package godev.budgetgo.models.repositories.implementations;
 
-import godev.budgetgo.models.Config;
 import godev.budgetgo.models.data.implementations.*;
+import godev.budgetgo.models.dbfactory.DbFactory;
 import godev.budgetgo.models.repositories.StoragesRepository;
+import godev.budgetgo.models.repositories.UsersRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,16 +12,19 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public class MySqlStoragesRepository extends MySqlRepository<Storage, StoragesSpecification, StoragesConditionsFactory> implements StoragesRepository {
-    public MySqlStoragesRepository() {
-        conditionsFactory = new StoragesConditionsFactory();
-        tableName = "storages";
+
+    private final UsersRepository usersRepository;
+
+    public MySqlStoragesRepository(DbFactory dbFactory) {
+        super("storages", dbFactory, new StoragesConditionsFactory());
+        usersRepository = dbFactory.getUsersRepository();
     }
 
     @Override
     protected Storage extract(ResultSet resultSet) throws SQLException {
         long creatorId = resultSet.getLong("creator_id");
         User creator = creatorId == 0 ?
-                UserBuilder.getRemovedUser() : Config.getUsersRepository().get(creatorId);
+                UserBuilder.getRemovedUser() : usersRepository.get(creatorId);
 
         long entityId = resultSet.getLong("id");
         StorageBuilder builder = new StorageBuilder()
@@ -37,7 +41,7 @@ public class MySqlStoragesRepository extends MySqlRepository<Storage, StoragesSp
             statement.setLong(1, entityId);
             ResultSet resultSetUsers = statement.executeQuery();
             while (resultSetUsers.next()) {
-                builder.addUser(Config.getUsersRepository()
+                builder.addUser(usersRepository
                         .get(resultSetUsers.getInt("user_id"))
                 );
             }

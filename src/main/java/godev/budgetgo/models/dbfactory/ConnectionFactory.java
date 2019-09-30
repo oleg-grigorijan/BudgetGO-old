@@ -1,4 +1,4 @@
-package godev.budgetgo.models.connection;
+package godev.budgetgo.models.dbfactory;
 
 import java.sql.Connection;
 

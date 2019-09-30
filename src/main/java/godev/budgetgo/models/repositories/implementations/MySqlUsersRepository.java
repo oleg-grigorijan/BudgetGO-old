@@ -3,6 +3,7 @@ package godev.budgetgo.models.repositories.implementations;
 import godev.budgetgo.models.data.implementations.User;
 import godev.budgetgo.models.data.implementations.UserBuilder;
 import godev.budgetgo.models.data.implementations.UsersSpecification;
+import godev.budgetgo.models.dbfactory.DbFactory;
 import godev.budgetgo.models.repositories.UsersRepository;
 
 import java.sql.Connection;
@@ -11,9 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MySqlUsersRepository extends MySqlRepository<User, UsersSpecification, UsersConditionsFactory> implements UsersRepository {
-    public MySqlUsersRepository() {
-        conditionsFactory = new UsersConditionsFactory();
-        tableName = "users";
+
+    public MySqlUsersRepository(DbFactory dbFactory) {
+        super("users", dbFactory, new UsersConditionsFactory());
     }
 
     @Override

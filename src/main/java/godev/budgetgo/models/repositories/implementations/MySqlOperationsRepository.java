@@ -1,26 +1,33 @@
 package godev.budgetgo.models.repositories.implementations;
 
-import godev.budgetgo.models.Config;
 import godev.budgetgo.models.data.implementations.*;
+import godev.budgetgo.models.dbfactory.DbFactory;
 import godev.budgetgo.models.repositories.OperationsRepository;
+import godev.budgetgo.models.repositories.StoragesRepository;
+import godev.budgetgo.models.repositories.UsersRepository;
 
 import java.sql.*;
 
 public class MySqlOperationsRepository extends MySqlRepository<Operation, OperationsSpecification, OperationsConditionsFactory> implements OperationsRepository {
-    public MySqlOperationsRepository() {
-        tableName = "operations";
-        conditionsFactory = new OperationsConditionsFactory();
+
+    private final UsersRepository usersRepository;
+    private final StoragesRepository storagesRepository;
+
+    public MySqlOperationsRepository(DbFactory dbFactory) {
+        super("operations", dbFactory, new OperationsConditionsFactory());
+        usersRepository = dbFactory.getUsersRepository();
+        storagesRepository = dbFactory.getStoragesRepository();
     }
 
     @Override
     protected Operation extract(ResultSet resultSet) throws SQLException {
         long creatorId = resultSet.getLong("creator_id");
         User creator = creatorId == 0 ?
-                UserBuilder.getRemovedUser() : Config.getUsersRepository().get(creatorId);
+                UserBuilder.getRemovedUser() : usersRepository.get(creatorId);
 
         return new OperationBuilder()
                 .setId(resultSet.getLong("id"))
-                .setStorage(Config.getStoragesRepository().get(resultSet.getLong("storage_id")))
+                .setStorage(storagesRepository.get(resultSet.getLong("storage_id")))
                 .setMoneyDelta(resultSet.getLong("money_delta"))
                 .setDate(resultSet.getDate("date").toLocalDate())
                 .setDescription(resultSet.getString("description"))

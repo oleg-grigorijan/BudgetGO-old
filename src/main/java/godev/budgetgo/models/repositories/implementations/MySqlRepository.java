@@ -1,9 +1,8 @@
 package godev.budgetgo.models.repositories.implementations;
 
-import godev.budgetgo.models.Config;
-import godev.budgetgo.models.connection.ConnectionFactory;
 import godev.budgetgo.models.data.Identifiable;
 import godev.budgetgo.models.data.Specification;
+import godev.budgetgo.models.dbfactory.ConnectionFactory;
 import godev.budgetgo.models.repositories.Repository;
 
 import java.sql.Connection;
@@ -16,12 +15,18 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 abstract class MySqlRepository<T extends Identifiable, S extends Specification<T>, C extends ConditionsFactory<S>> implements Repository<T, S> {
-    C conditionsFactory;
-    String tableName;
-    final ConnectionFactory connectionFactory = Config.getConnectionFactory();
+    final String tableName;
+    final C conditionsFactory;
+    final ConnectionFactory connectionFactory;
     List<Consumer<T>> subscribersOnAdd = new ArrayList<>();
     private List<Consumer<T>> subscribersOnRemove = new ArrayList<>();
     List<BiConsumer<T, T>> subscribersOnUpdate = new ArrayList<>();
+
+    MySqlRepository(String tableName, ConnectionFactory connectionFactory, C conditionsFactory) {
+        this.tableName = tableName;
+        this.connectionFactory = connectionFactory;
+        this.conditionsFactory = conditionsFactory;
+    }
 
     protected abstract T extract(ResultSet resultSet) throws SQLException;
 
