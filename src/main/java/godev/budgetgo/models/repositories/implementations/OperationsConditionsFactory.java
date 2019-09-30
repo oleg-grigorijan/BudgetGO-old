@@ -4,7 +4,7 @@ import godev.budgetgo.models.data.implementations.OperationsSpecification;
 
 import java.sql.Date;
 
-public class OperationsConditionsFactory implements ConditionsFactory<OperationsSpecification> {
+class OperationsConditionsFactory implements ConditionsFactory<OperationsSpecification> {
     @Override
     public Conditions createFrom(OperationsSpecification spec) {
         Conditions result = new Conditions();

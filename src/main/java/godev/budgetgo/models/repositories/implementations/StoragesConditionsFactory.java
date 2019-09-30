@@ -2,7 +2,7 @@ package godev.budgetgo.models.repositories.implementations;
 
 import godev.budgetgo.models.data.implementations.StoragesSpecification;
 
-public class StoragesConditionsFactory implements ConditionsFactory<StoragesSpecification> {
+class StoragesConditionsFactory implements ConditionsFactory<StoragesSpecification> {
     @Override
     public Conditions createFrom(StoragesSpecification spec) {
         Conditions result = new Conditions();

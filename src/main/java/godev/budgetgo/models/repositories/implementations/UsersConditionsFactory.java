@@ -2,7 +2,7 @@ package godev.budgetgo.models.repositories.implementations;
 
 import godev.budgetgo.models.data.implementations.UsersSpecification;
 
-public class UsersConditionsFactory implements ConditionsFactory<UsersSpecification> {
+class UsersConditionsFactory implements ConditionsFactory<UsersSpecification> {
     @Override
     public Conditions createFrom(UsersSpecification spec) {
         Conditions result = new Conditions();
